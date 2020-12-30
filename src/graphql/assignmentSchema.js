@@ -5,7 +5,7 @@ export const assignmentTypeDef = gql`
     type Assignment {
         _id: String!,
         assignmentName: String!,
-        assignmentCourse: Course!,
+        assignmentCourse: String!,
         assignmentDueDate: String!,
         assignmentLateDate: String!,
         assignmentIsAssigned: Boolean!,

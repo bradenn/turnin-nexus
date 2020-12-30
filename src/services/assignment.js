@@ -10,6 +10,11 @@ export default {
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
         return assignmentRecord;
     },
+    async getAssignment(assignmentId, userId) {
+        const assignmentRecord = await Assignment.findOne({_id: assignmentId});
+        if (!assignmentRecord) throw new Error('Failed to create the assignment.');
+        return assignmentRecord;
+    },
     async getCourseAssignments(courseId) {
         const assignmentRecord = await Assignment.find({assignmentCourse: courseId});
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
