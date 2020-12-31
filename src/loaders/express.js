@@ -17,18 +17,16 @@ export default app => {
 
         app.use(cors());
 
+
         app.route('/register')
             .post(registerUser)
         app.route('/auth')
             .post(authenticate);
         app.all('/graphql', verifyToken);
 
-
         /* Helps with reverse proxy */
         app.enable('trust proxy');
 
         resolve(app);
     });
-
-
 };
