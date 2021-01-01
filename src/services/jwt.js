@@ -1,7 +1,5 @@
-import {Session} from '../models/session';
 import jwt from "jsonwebtoken";
 import config from "../config";
-import {v4} from "uuid";
 
 export default {
     sign(payload) {

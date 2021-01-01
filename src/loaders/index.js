@@ -2,26 +2,36 @@ import performance from 'performance-now';
 import expressLoader from './express.js';
 import mongooseLoader from './mongoose.js';
 import graphQLLoader from './graphql.js';
+import sessionLoader from './session.js';
 import logger from './logger';
 
 let round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 export default async app => {
-    let start = performance();
-    expressLoader(app)
-        .then(() => {
-            logger.info(`Express loaded [${round(performance() - start)} ms]`);
-        });
-
-    start = performance();
-    graphQLLoader(app)
-        .then(() => {
+    return new Promise((resolve, reject) => {
+        let start = performance(), init = performance();
+        expressLoader(app)
+            .then(() => {
+                logger.info(`Express loaded [${round(performance() - start)} ms]`);
+                start = performance();
+                return mongooseLoader()
+            })
+            .then((mongoose) => {
+                logger.info(`Mongoose loaded [${round(performance() - start)} ms]`);
+                start = performance();
+                return sessionLoader(app, mongoose)
+            })
+            .then(app => {
+                logger.info(`Sessions loaded [${round(performance() - start)} ms]`);
+                start = performance();
+                return graphQLLoader(app);
+            }).then(() => {
             logger.info(`GraphQL loaded [${round(performance() - start)} ms]`);
+            logger.info(`All Modules Loaded [${round(performance() - init)} ms]`);
+            resolve();
+        }).catch(error => {
+            logger.error(`Caught Exception ${error}`);
+            reject(error);
         });
-
-    start = performance();
-    mongooseLoader()
-        .then(() => {
-            logger.info(`Mongoose loaded [${round(performance() - start)} ms]`);
-        });
+    });
 }

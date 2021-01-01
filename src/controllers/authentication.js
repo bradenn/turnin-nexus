@@ -1,4 +1,5 @@
 import {jwtService, userService} from "../services"
+import passport from "passport";
 
 export function verifyToken(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -22,6 +23,7 @@ export function authenticate(req, res) {
             .then(document => {
                 jwtService.sign({userId: document._id, user: document})
                     .then(token => {
+                        req.session.userId = document._id;
                         return res.status(200).json({token: token, user: document});
                     })
                     .catch(error => {
@@ -40,6 +42,7 @@ export function registerUser(req, res) {
     if (req.body.username && req.body.password && req.body.email && req.body.firstname && req.body.lastname) {
         userService.createUser(req.body)
             .then(document => {
+                req.session.userId = document._id;
                 jwtService.sign({userId: document._id})
                     .then(token => {
                         return res.status(200).json({token: token, user: document});
@@ -55,4 +58,10 @@ export function registerUser(req, res) {
     return res.status(403);
 
 }
+
+export function logoutUser(req, res) {
+    req.session.destroy();
+    res.status(200).json({ok: true})
+}
+
 
