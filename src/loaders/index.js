@@ -2,7 +2,7 @@ import performance from 'performance-now';
 import expressLoader from './express.js';
 import mongooseLoader from './mongoose.js';
 import graphQLLoader from './graphql.js';
-import sessionLoader from './session.js';
+import passportLoader from './passport.js';
 import logger from './logger';
 
 let round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
@@ -19,10 +19,10 @@ export default async app => {
             .then((mongoose) => {
                 logger.info(`Mongoose loaded [${round(performance() - start)} ms]`);
                 start = performance();
-                return sessionLoader(app, mongoose)
+                return passportLoader(app, mongoose)
             })
             .then(app => {
-                logger.info(`Sessions loaded [${round(performance() - start)} ms]`);
+                logger.info(`Passport loaded [${round(performance() - start)} ms]`);
                 start = performance();
                 return graphQLLoader(app);
             }).then(() => {

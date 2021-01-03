@@ -10,11 +10,11 @@ const assignmentSchema = mongoose.Schema({
         ref: "Course"
     },
     assignmentDueDate: {
-        type: Date,
+        type: String,
         required: true
     },
     assignmentLateDate: {
-        type: Date,
+        type: String,
         required: true
     },
     assignmentIsAssigned: {
