@@ -19,16 +19,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Ctx, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Query, Resolver } from "type-graphql";
 import courseService from "../services/CourseService";
 import { Course } from "../schemas/Course";
+import { ObjectIdScalar } from "../schemas/ScalarObjectId";
+import { ObjectId } from "mongodb";
 let CourseResolver = class CourseResolver {
+    course({ userId }, courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield courseService.getCourse(courseId);
+        });
+    }
     instructorCourses({ userId }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield courseService.getInstructorCourses(userId);
         });
     }
+    instructorCourse({ userId }, courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield courseService.getInstructorCourse(courseId, userId);
+        });
+    }
 };
+__decorate([
+    Query(returns => Course),
+    __param(0, Ctx()),
+    __param(1, Arg("courseId", type => ObjectIdScalar)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, ObjectId]),
+    __metadata("design:returntype", Promise)
+], CourseResolver.prototype, "course", null);
 __decorate([
     Query(returns => [Course]),
     __param(0, Ctx()),
@@ -36,6 +56,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CourseResolver.prototype, "instructorCourses", null);
+__decorate([
+    Query(returns => Course),
+    __param(0, Ctx()),
+    __param(1, Arg("courseId", type => ObjectIdScalar)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, ObjectId]),
+    __metadata("design:returntype", Promise)
+], CourseResolver.prototype, "instructorCourse", null);
 CourseResolver = __decorate([
     Resolver(of => Course)
 ], CourseResolver);

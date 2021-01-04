@@ -1,10 +1,30 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property, Ref} from "@typegoose/typegoose"
-import {ObjectId} from "mongoose";
+import {getModelForClass, pre, prop as Property, Ref} from "@typegoose/typegoose"
 import {Course} from "./Course";
+import bcrypt from "bcrypt";
+
+function hashPassword(password: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(password, 10, function (err, hash) {
+            if (err) reject(new Error(err));
+            resolve(hash);
+        });
+    });
+}
 
 @ObjectType()
+@pre<User>('save', function (next) {
+    let user = this;
+    if (!user.isModified('password')) return next();
+    hashPassword(user.password).then(hash => {
+        user.password = hash;
+        next();
+    }).catch(_ => {
+    });
+})
+
 export class User {
+
     @Field()
     readonly _id: string;
 
@@ -23,40 +43,16 @@ export class User {
     @Field() @Property({required: true})
     password!: string
 
-    @Field(type => [Course]) @Property({ref: "Course", default: []})
+    @Field() @Property({required: true, default: 'student'})
+    account!: string
+
+    @Field(type => [Course], {nullable: true}) @Property({ref: "Course", default: []})
     courses!: Ref<Course>[]
 
     @Field() @Property({default: Date.now})
     dateCreated: string
+
 }
 
 export const UserModel = getModelForClass(User);
-
-UserModel.statics.authenticate = (username, password) => {
-    return new Promise((resolve, reject) => {
-        UserModel.findOne({"username": username})
-            .then(user => {
-                if (!user) reject(new Error("User not found"))
-
-                verifyHash(password, user.password).then(() => {
-                    return resolve(user);
-                }).catch((er) => {
-
-                    let err = new Error("An account could not be found using that email/password.");
-                    return reject(err);
-                });
-            });
-    });
-};
-
-UserModel.pre('save', async function (next) {
-    let user = this;
-    if (!user.isModified('password')) return next();
-    user.password = await hashPassword(user.password);
-    next();
-});
-
-
-
-
 

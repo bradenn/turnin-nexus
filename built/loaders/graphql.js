@@ -4,14 +4,13 @@ import { ObjectId } from "mongodb";
 import { CourseResolver } from "../resolvers/CourseResolver";
 import * as path from "path";
 import { ObjectIdScalar } from "../schemas/ScalarObjectId";
+import { TypegooseMiddleware } from "../middleware/typegoose";
 export default app => {
     return new Promise(resolve => {
-        const schema = buildSchema({
+        buildSchema({
             resolvers: [CourseResolver],
             emitSchemaFile: path.resolve(__dirname, "schema.gql"),
-            // use document converting middleware
-            /*globalMiddlewares: [TypegooseMiddleware],*/
-            // use ObjectId scalar mapping
+            globalMiddlewares: [TypegooseMiddleware],
             scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],
             validate: false,
         }).then(schema => {

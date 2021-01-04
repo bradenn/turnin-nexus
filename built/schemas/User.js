@@ -7,18 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { Field, ObjectType } from "type-graphql";
-import { getModelForClass, prop as Property } from "@typegoose/typegoose";
+import { getModelForClass, pre, prop as Property } from "@typegoose/typegoose";
 import { Course } from "./Course";
+import bcrypt from "bcrypt";
+function hashPassword(password) {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(password, 10, function (err, hash) {
+            if (err)
+                reject(new Error(err));
+            resolve(hash);
+        });
+    });
+}
 let User = class User {
 };
 __decorate([
@@ -51,7 +52,12 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    Field(type => [Course]),
+    Field(),
+    Property({ required: true, default: 'student' }),
+    __metadata("design:type", String)
+], User.prototype, "account", void 0);
+__decorate([
+    Field(type => [Course], { nullable: true }),
     Property({ ref: "Course", default: [] }),
     __metadata("design:type", Array)
 ], User.prototype, "courses", void 0);
@@ -61,31 +67,17 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "dateCreated", void 0);
 User = __decorate([
-    ObjectType()
-], User);
-export { User };
-export const UserModel = getModelForClass(User);
-UserModel.statics.authenticate = (username, password) => {
-    return new Promise((resolve, reject) => {
-        UserModel.findOne({ "username": username })
-            .then(user => {
-            if (!user)
-                reject(new Error("User not found"));
-            verifyHash(password, user.password).then(() => {
-                return resolve(user);
-            }).catch((er) => {
-                let err = new Error("An account could not be found using that email/password.");
-                return reject(err);
-            });
-        });
-    });
-};
-UserModel.pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
+    ObjectType(),
+    pre('save', function (next) {
         let user = this;
         if (!user.isModified('password'))
             return next();
-        user.password = yield hashPassword(user.password);
-        next();
-    });
-});
+        hashPassword(user.password).then(hash => {
+            user.password = hash;
+            next();
+        }).catch(_ => {
+        });
+    })
+], User);
+export { User };
+export const UserModel = getModelForClass(User);

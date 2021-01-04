@@ -1,6 +1,7 @@
 import {CourseModel} from "../schemas/Course";
 import {Course} from "../schemas/Course";
 
+
 export default {
 
     async createCourse(courseBody, userId): Promise<Course> {

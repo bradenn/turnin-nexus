@@ -11,13 +11,19 @@ type Course {
   dateCreated: String!
 }
 
+"""Mongo object id scalar type"""
+scalar ObjectId
+
 type Query {
+  course(courseId: ObjectId!): Course!
+  instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
 }
 
 type User {
   _id: String!
-  courses: [Course!]!
+  account: String!
+  courses: [Course!]
   dateCreated: String!
   email: Float!
   firstname: String!

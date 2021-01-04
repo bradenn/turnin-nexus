@@ -8,9 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { UserModel } from '../schemas/User';
+import bcrypt from "bcrypt";
+function verifyHash(password, original) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, original, function (err, result) {
+            if (err || !result)
+                reject(new Error(err));
+            resolve(result);
+        });
+    });
+}
 export default {
     authenticateUser(username, password) {
         return new Promise((resolve, reject) => {
+            UserModel.findOne({ username: username })
+                .then(userRecord => {
+                if (!userRecord)
+                    reject("User does not exist.");
+                verifyHash(password, userRecord.password)
+                    .then(_ => resolve(userRecord))
+                    .catch(_ => reject("Password is not correct."));
+            })
+                .catch(_ => reject("Database Error"));
         });
     },
     createUser(user) {

@@ -82,6 +82,7 @@ const stdIOSubmissionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    submissionOwner: {},
     submissionFiles: {
         type: [{
                 type: mongoose.SchemaTypes.ObjectId,

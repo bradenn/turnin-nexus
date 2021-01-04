@@ -1,9 +1,26 @@
 import {UserModel} from '../schemas/User';
+import bcrypt from "bcrypt";
+
+function verifyHash(password: string, original: string) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, original, function (err, result) {
+            if (err || !result) reject(new Error(err));
+            resolve(result);
+        });
+    });
+}
 
 export default {
     authenticateUser(username, password) {
         return new Promise((resolve, reject) => {
-
+            UserModel.findOne({username: username})
+                .then(userRecord => {
+                    if (!userRecord) reject("User does not exist.")
+                    verifyHash(password, userRecord.password)
+                        .then(_ => resolve(userRecord))
+                        .catch(_ => reject("Password is not correct."));
+                })
+                .catch(_ => reject("Database Error"));
         });
     },
     async createUser(user) {
