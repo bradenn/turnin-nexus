@@ -1,5 +1,6 @@
 import {UserModel} from '../schemas/User';
 import bcrypt from "bcrypt";
+import {Course} from "../schemas/Course";
 
 function verifyHash(password: string, original: string) {
     return new Promise((resolve, reject) => {
@@ -42,5 +43,10 @@ export default {
         const userRecord = await UserModel.findById(userId);
         if (!userRecord) throw new Error('Failed to find user');
         return userRecord;
+    },
+    async getCourses(userId: string): Promise<Course[]> {
+        const userRecord = await UserModel.findById(userId).populate('courses')
+        if (!userRecord) throw new Error('User not found.');
+        return userRecord.courses;
     }
 }

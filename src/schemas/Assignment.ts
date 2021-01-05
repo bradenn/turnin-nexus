@@ -1,33 +1,33 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop} from "@typegoose/typegoose"
+import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import {Brief} from "./Brief";
 import {StdIOAssignment} from "./StdIOAssignment";
 
 @ObjectType()
 export class Assignment {
-    @Field() @prop({required: true})
+    @Field() @Property({required: true})
     assignmentName!: string;
 
-    @Field(type => Course) @prop({required: true, ref: () => Course})
+    @Field(type => Course) @Property({required: true, ref: () => Course})
     assignmentCourse!: Course;
 
-    @Field() @prop({required: true})
+    @Field() @Property({required: true})
     assignmentDueDate!: string;
 
-    @Field() @prop({required: true})
+    @Field() @Property({required: true})
     assignmentLateDate!: string;
 
-    @Field() @prop({default: false})
+    @Field() @Property({default: false})
     assignmentIsAssigned!: boolean;
 
-    @Field() @prop()
+    @Field() @Property()
     assignmentBrief!: Brief;
 
-    @Field(type => StdIOAssignment) @prop({ref: () => StdIOAssignment})
+    @Field(type => StdIOAssignment) @Property({ref: () => StdIOAssignment})
     assignmentSpecifications: StdIOAssignment;
 
-    @Field() @prop({default: Date.now})
+    @Field() @Property({default: Date.now})
     dateCreated: string
 }
 

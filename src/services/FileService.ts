@@ -1,11 +1,18 @@
-import {File} from '../models/file';
+import {File, FileModel} from '../schemas/File';
 import s3Client from "./s3Client";
+import {ObjectId} from "mongodb";
+
 
 export default {
-    createFile(fileName, fileOwner, fileBuffer) {
+    async getFile(fileId: ObjectId): Promise<File> {
+        const fileRecord: File = await FileModel.findById(fileId);
+        if(!fileRecord) throw new Error('File not found.');
+        return fileRecord;
+    },
+    createFile(fileName: string, fileOwner: string, fileBuffer: Buffer): Promise<string> {
         return new Promise((resolve, reject) => {
             s3Client.uploadFile(fileName, fileBuffer).then(reference => {
-                File.create({
+                FileModel.create({
                     fileName: fileName,
                     fileOwner: fileOwner,
                     fileReference: reference
@@ -18,11 +25,11 @@ export default {
             });
         });
     },
-    deleteFile(fileId) {
+    deleteFile(fileId: string) {
         return new Promise((resolve, reject) => {
-            File.findOne({_id: fileId}).then(document => {
+            FileModel.findOne({_id: fileId}).then(document => {
                 s3Client.deleteFile(document.fileReference).then(() => {
-                    File.deleteOne({_id: fileId}).then(() => resolve());
+                    FileModel.deleteOne({_id: fileId}).then(status => resolve(status));
                 }).catch(error => reject(error));
             }).catch(error => reject(error));
         });

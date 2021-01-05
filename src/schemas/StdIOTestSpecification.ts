@@ -1,6 +1,5 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop} from "@typegoose/typegoose"
-import {prop as Property} from "@typegoose/typegoose/lib/prop";
+import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 
 @ObjectType()
 export class StdIOTestSpecification {

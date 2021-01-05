@@ -1,19 +1,19 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop} from "@typegoose/typegoose"
+import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 import {File} from "./File"
 
 @ObjectType()
 export class Brief {
-    @Field() @prop({required: true})
+    @Field() @Property({required: true})
     briefTitle!: string;
 
-    @Field() @prop()
+    @Field() @Property()
     briefDesc: string;
 
-    @Field(type => File) @prop({required: true, ref: () => File})
+    @Field(type => File) @Property({required: true, ref: () => File})
     briefMarkdownFile!: File;
 
-    @Field() @prop({default: Date.now})
+    @Field() @Property({default: Date.now})
     dateCreated: string
 }
 

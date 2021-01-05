@@ -18,6 +18,8 @@ type Query {
   course(courseId: ObjectId!): Course!
   instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
+  user(targetId: ObjectId!): User!
+  userSelf: User!
 }
 
 type User {
