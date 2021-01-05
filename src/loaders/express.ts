@@ -23,6 +23,8 @@ export default app => {
         /* Helps with reverse proxy */
         app.enable('trust proxy');
 
+        
+
         resolve(app);
     });
 };

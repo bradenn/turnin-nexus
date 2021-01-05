@@ -4,6 +4,7 @@ const transports = [];
 if(process.env.NODE_ENV !== 'development') {
     transports.push(
         new (winston.transports.Console)({
+    // @ts-ignore
             prettyPrint: true,
             colorize: true,
             timestamp: true,
@@ -11,6 +12,7 @@ if(process.env.NODE_ENV !== 'development') {
     )
 } else {
     transports.push(
+        // @ts-ignore
         new winston.transports.Console({
             format: winston.format.combine(
                 winston.format.cli(),
@@ -20,8 +22,9 @@ if(process.env.NODE_ENV !== 'development') {
     )
 }
 
-
+// @ts-ignore
 const logger = winston.createLogger({
+    // @ts-ignore
     level: 0,
     levels: winston.config.npm.levels,
     format: winston.format.combine(
