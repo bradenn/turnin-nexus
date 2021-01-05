@@ -1,6 +1,6 @@
 # Project exclude paths
 /node_modules/
-/built/
+/built/**/*
 .env
 .graphqlconfig
 .idea
