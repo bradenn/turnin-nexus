@@ -1,5 +1,6 @@
 import {Field, ObjectType} from "type-graphql"
 import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {File} from "./File"
 
 @ObjectType()
 export class StdIOTestSpecification {
@@ -15,11 +16,11 @@ export class StdIOTestSpecification {
     @Field() @Property({default: false})
     testIsHidden!: boolean;
 
-    @Field() @Property({required: true})
+    @Field(type => [String]) @Property({type: [String], required: true})
     testArguments!: string[];
 
-    @Field() @Property({required: true})
-    testExitCode!: string[];
+    @Field(type => Number) @Property({required: true})
+    testExitCode!: number;
 
     @Field(type => File) @Property({ref: () => File})
     testInput: File;

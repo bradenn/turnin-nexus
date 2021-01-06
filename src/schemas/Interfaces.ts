@@ -6,6 +6,6 @@ export interface Context {
 }
 
 export interface JwtPayload {
-    userId: string,
+    userId: ObjectId,
     user: User;
 }

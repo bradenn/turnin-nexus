@@ -3,7 +3,28 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Assignment {
+  _id: ObjectId!
+  assignmentBrief: Brief!
+  assignmentCourse: Course!
+  assignmentDueDate: String!
+  assignmentIsAssigned: Boolean!
+  assignmentLateDate: String!
+  assignmentName: String!
+  assignmentSpecifications: StdIOAssignment!
+  dateCreated: String!
+}
+
+type Brief {
+  briefDesc: String!
+  briefMarkdownFile: File!
+  briefTitle: String!
+  dateCreated: String!
+}
+
 type Course {
+  _id: ObjectId!
+  courseAssignments: [Assignment!]!
   courseInstructor: User!
   courseIsLocked: Boolean!
   courseName: String!
@@ -11,10 +32,18 @@ type Course {
   dateCreated: String!
 }
 
+type File {
+  dateCreated: String!
+  fileName: String!
+  fileOwner: User!
+  fileReference: String!
+}
+
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
+  assignment(assignmentId: ObjectId!): Assignment!
   course(courseId: ObjectId!): Course!
   instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
@@ -22,8 +51,30 @@ type Query {
   userSelf: User!
 }
 
+type StdIOAssignment {
+  assignmentProvidedFiles: [File!]!
+  assignmentRequiredFiles: [String!]!
+  assignmentTests: [StdIOTestSpecification!]!
+  compilationCommand: String!
+  compilationTimeout: Float!
+  dateCreated: String!
+}
+
+type StdIOTestSpecification {
+  dateCreated: String!
+  testArguments: [String!]!
+  testError: File!
+  testExitCode: Float!
+  testInput: File!
+  testIsHidden: Boolean!
+  testMemoryLeaks: Boolean!
+  testName: String!
+  testOutput: File!
+  testTimeout: Float!
+}
+
 type User {
-  _id: String!
+  _id: ObjectId!
   account: String!
   courses: [Course!]
   dateCreated: String!

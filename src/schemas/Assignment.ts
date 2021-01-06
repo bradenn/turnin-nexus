@@ -3,9 +3,14 @@ import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import {Brief} from "./Brief";
 import {StdIOAssignment} from "./StdIOAssignment";
+import {ObjectId} from "mongodb";
 
 @ObjectType()
 export class Assignment {
+
+    @Field()
+    readonly _id: ObjectId;
+
     @Field() @Property({required: true})
     assignmentName!: string;
 

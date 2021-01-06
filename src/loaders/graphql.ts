@@ -7,12 +7,13 @@ import * as path from "path";
 import {ObjectIdScalar} from "../schemas/ScalarObjectId";
 import {User} from "../schemas/User";
 import {TypegooseMiddleware} from "../middleware/typegoose";
+import {AssignmentResolver} from "../resolvers/AssignmentResolver";
 
 export default app => {
     return new Promise(resolve => {
 
         buildSchema({
-            resolvers: [CourseResolver, UserResolver],
+            resolvers: [CourseResolver, AssignmentResolver, UserResolver],
             emitSchemaFile: path.resolve(__dirname, "schema.gql"),
             globalMiddlewares: [TypegooseMiddleware],
             scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],
