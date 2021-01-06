@@ -2,6 +2,7 @@ import {Field, ObjectType} from "type-graphql"
 import {getModelForClass, pre, prop as Property, Ref} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import bcrypt from "bcrypt";
+import {ObjectId} from "mongodb";
 
 function hashPassword(password: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -26,7 +27,7 @@ function hashPassword(password: string): Promise<string> {
 export class User {
 
     @Field()
-    readonly _id: string;
+    readonly _id: ObjectId;
 
     @Field() @Property({required: true})
     username!: string;

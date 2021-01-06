@@ -1,5 +1,8 @@
 import {CourseModel} from "../schemas/Course";
 import {Course} from "../schemas/Course";
+import {ObjectId} from "mongodb";
+import assignmentService from "./AssignmentService";
+import {AssignmentModel} from "../schemas/Assignment";
 
 
 export default {
@@ -29,6 +32,10 @@ export default {
         const courseRecord = await CourseModel.findByIdAndDelete(courseId);
         if (!courseRecord) throw new Error('Failed to remove record');
         return courseRecord;
+    },
+    async getAssignments(courseId: ObjectId) {
+        const assignmentRecords = await AssignmentModel.find({assignmentCourse: courseId})
+        if (!assignmentRecords) throw new Error('Failed to remove record');
+        return assignmentRecords;
     }
-
 }

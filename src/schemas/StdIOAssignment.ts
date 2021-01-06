@@ -11,7 +11,7 @@ export class StdIOAssignment {
     @Field() @Property({default: 5000})
     compilationTimeout!: number;
 
-    @Field() @Property({required: true})
+    @Field(type => [String]) @Property({required: true, type: [String]})
     assignmentRequiredFiles!: string[];
 
     @Field(type => [File]) @Property({ref: "File", default: []})

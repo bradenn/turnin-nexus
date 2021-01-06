@@ -3,6 +3,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "outDir": "./built",
     "allowJs": true,
     "target": "es6",
