@@ -24,12 +24,21 @@ type Brief {
 
 type Course {
   _id: ObjectId!
+  courseAssignmentCount: Float!
   courseAssignments: [Assignment!]!
+  courseDescription: String!
   courseInstructor: User!
   courseIsLocked: Boolean!
   courseName: String!
   courseSection: Float!
+  courseStudentCount: Float!
   dateCreated: String!
+}
+
+input CourseInput {
+  courseDescription: String!
+  courseName: String!
+  courseSection: Float!
 }
 
 type File {
@@ -37,6 +46,10 @@ type File {
   fileName: String!
   fileOwner: User!
   fileReference: String!
+}
+
+type Mutation {
+  createCourse(courseInput: CourseInput!): Course!
 }
 
 """Mongo object id scalar type"""

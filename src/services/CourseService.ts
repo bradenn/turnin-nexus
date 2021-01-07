@@ -3,6 +3,7 @@ import {Course} from "../schemas/Course";
 import {ObjectId} from "mongodb";
 import assignmentService from "./AssignmentService";
 import {AssignmentModel} from "../schemas/Assignment";
+import {UserModel} from "../schemas/User";
 
 
 export default {
@@ -37,5 +38,15 @@ export default {
         const assignmentRecords = await AssignmentModel.find({assignmentCourse: courseId})
         if (!assignmentRecords) throw new Error('Failed to remove record');
         return assignmentRecords;
+    },
+    async getAssignmentCount(courseId: ObjectId): Promise<Number> {
+        const assignmentCount = await AssignmentModel.countDocuments({assignmentCourse: courseId})
+        if (!assignmentCount && assignmentCount !== 0) throw new Error('Failed to count assignments');
+        return assignmentCount;
+    },
+    async getStudentCount(courseId: ObjectId): Promise<Number> {
+        const userCount = await UserModel.countDocuments({courses: {$all: [courseId]}})
+        if (!userCount && userCount !== 0) throw new Error('Failed to count users');
+        return userCount;
     }
 }
