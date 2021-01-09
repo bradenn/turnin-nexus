@@ -40,7 +40,7 @@ export default {
         return assignmentRecords;
     },
     async getAssignmentCount(courseId: ObjectId): Promise<Number> {
-        const assignmentCount = await AssignmentModel.countDocuments({assignmentCourse: courseId})
+        const assignmentCount = await AssignmentModel.countDocuments({assignmentCourse: courseId});
         if (!assignmentCount && assignmentCount !== 0) throw new Error('Failed to count assignments');
         return assignmentCount;
     },

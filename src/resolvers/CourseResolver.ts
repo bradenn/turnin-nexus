@@ -33,6 +33,11 @@ export class CourseResolver {
         return await courseService.getStudentCount(course._id)
     }
 
+    @FieldResolver(returns => String)
+    courseFullName(@Root() course: Course): String {
+        return `${course.courseName}.${course.courseSection}`;
+    }
+
     @Query(returns => [Course])
     async instructorCourses(@Ctx() {userId}: Context): Promise<Course[]> {
         return await courseService.getInstructorCourses(userId)

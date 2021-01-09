@@ -1,8 +1,8 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {getModelForClass, prop as Property, Ref} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import {Brief} from "./Brief";
-import {StdIOAssignment} from "./StdIOAssignment";
+import {StdIOSpecification} from "./StdIOSpecification";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
@@ -29,10 +29,10 @@ export class Assignment {
     @Field() @Property()
     assignmentBrief!: Brief;
 
-    @Field(type => StdIOAssignment) @Property({ref: () => StdIOAssignment})
-    assignmentSpecifications: StdIOAssignment;
+    @Field(type => StdIOSpecification) @Property({ref: () => StdIOSpecification})
+    assignmentSpecification!: StdIOSpecification;
 
-    @Field() @Property({default: Date.now})
+    @Field({nullable: true}) @Property({default: Date.now})
     dateCreated: string
 }
 

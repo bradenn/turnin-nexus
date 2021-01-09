@@ -3,6 +3,7 @@ import {buildSchema} from "type-graphql";
 import {ObjectId} from "mongodb";
 import {CourseResolver} from "../resolvers/CourseResolver";
 import {UserResolver} from "../resolvers/UserResolver";
+import {StdIOSpecificationResolver} from "../resolvers/StdIOSpecificationResolver";
 import * as path from "path";
 import {ObjectIdScalar} from "../schemas/ScalarObjectId";
 import {User} from "../schemas/User";
@@ -13,7 +14,7 @@ export default app => {
     return new Promise(resolve => {
 
         buildSchema({
-            resolvers: [CourseResolver, AssignmentResolver, UserResolver],
+            resolvers: [CourseResolver, AssignmentResolver, UserResolver, StdIOSpecificationResolver],
             emitSchemaFile: path.resolve(__dirname, "schema.gql"),
             globalMiddlewares: [TypegooseMiddleware],
             scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],

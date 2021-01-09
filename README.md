@@ -3,6 +3,28 @@ https://github.com/bradenn/turnin-nexus
 
 This module is handles objects and interactions related to the Turnin's core services. Features should be added to the service via external modules.
 
+## Abstract Flow Structure
+
+`T: User | Course | Assignment | Brief | File | StdIOSpecification | StdIOTestSpecification | StdIOSubmission | StdIOSubmissionResult`
+
+`Schema<T> => Resolver<T> || Input<T> || Service<T>`
+
+`User => Course[]`
+
+`Course => User`
+
+`Assignment => Course, StdIOSpecification`
+
+`StdIOSpecification => StdIOTestSpecification[], File`
+
+`StdIOTestSpecification => File`
+
+`StdIOSubmission => StdIOSubmissionResult[], User, Assignment`
+
+`StdIOSubmissionResult => File`
+
+
+
 ## Notable Components
 
 - Express.js

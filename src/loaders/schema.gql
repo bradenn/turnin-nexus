@@ -11,8 +11,15 @@ type Assignment {
   assignmentIsAssigned: Boolean!
   assignmentLateDate: String!
   assignmentName: String!
-  assignmentSpecifications: StdIOAssignment!
-  dateCreated: String!
+  assignmentSpecification: StdIOSpecification!
+  dateCreated: String
+}
+
+input AssignmentInput {
+  assignmentCourse: String!
+  assignmentDueDate: String!
+  assignmentLateDate: String!
+  assignmentName: String!
 }
 
 type Brief {
@@ -27,6 +34,7 @@ type Course {
   courseAssignmentCount: Float!
   courseAssignments: [Assignment!]!
   courseDescription: String!
+  courseFullName: String!
   courseInstructor: User!
   courseIsLocked: Boolean!
   courseName: String!
@@ -49,7 +57,10 @@ type File {
 }
 
 type Mutation {
+  addRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
+  createAssignment(assignmentInput: AssignmentInput!): Assignment!
   createCourse(courseInput: CourseInput!): Course!
+  updateStdIOSpecification(stdIOSpecificationId: ObjectId!, stdIOSpecificationInput: StdIOSpecificationInput!): StdIOSpecification!
 }
 
 """Mongo object id scalar type"""
@@ -60,17 +71,26 @@ type Query {
   course(courseId: ObjectId!): Course!
   instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
+  stdIOSpecification(stdIOSpecificationId: ObjectId!): StdIOSpecification!
   user(targetId: ObjectId!): User!
   userSelf: User!
 }
 
-type StdIOAssignment {
-  assignmentProvidedFiles: [File!]!
-  assignmentRequiredFiles: [String!]!
-  assignmentTests: [StdIOTestSpecification!]!
-  compilationCommand: String!
-  compilationTimeout: Float!
+type StdIOSpecification {
+  _id: ObjectId!
+  assignmentCourse: Course!
   dateCreated: String!
+  specificationCompilationCommand: String!
+  specificationCompilationTimeout: Float!
+  specificationProvidedFiles: [File!]!
+  specificationRequiredFiles: [String!]!
+  specificationTests: [StdIOTestSpecification!]!
+}
+
+input StdIOSpecificationInput {
+  specificationCompilationCommand: String!
+  specificationCompilationTimeout: Float!
+  specificationRequiredFiles: [String!]!
 }
 
 type StdIOTestSpecification {

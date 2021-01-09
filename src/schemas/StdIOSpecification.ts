@@ -2,26 +2,31 @@ import {Field, ObjectType} from "type-graphql"
 import {getModelForClass, prop as Property, Ref} from "@typegoose/typegoose"
 import {File} from "./File";
 import {StdIOTestSpecification} from "./StdIOTestSpecification";
+import {ObjectId} from "mongodb";
 
 @ObjectType()
-export class StdIOAssignment {
+export class StdIOSpecification {
+
+    @Field()
+    readonly _id: ObjectId;
+
     @Field() @Property({required: true})
-    compilationCommand!: string;
+    specificationCompilationCommand!: string;
 
     @Field() @Property({default: 5000})
-    compilationTimeout!: number;
+    specificationCompilationTimeout!: number;
 
     @Field(type => [String]) @Property({required: true, type: [String]})
-    assignmentRequiredFiles!: string[];
+    specificationRequiredFiles!: string[];
 
     @Field(type => [File]) @Property({ref: "File", default: []})
-    assignmentProvidedFiles!: Ref<File>[]
+    specificationProvidedFiles!: File[]
 
     @Field(type => [StdIOTestSpecification]) @Property({ref: "StdIOTestSpecification", default: []})
-    assignmentTests!: Ref<StdIOTestSpecification>[];
+    specificationTests: StdIOTestSpecification[];
 
     @Field() @Property({default: Date.now})
     dateCreated: string
 }
 
-export const StdIOAssignmentModel = getModelForClass(StdIOAssignment);
+export const StdIOSpecificationModel = getModelForClass(StdIOSpecification);
