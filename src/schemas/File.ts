@@ -2,9 +2,13 @@ import {Field, ObjectType} from "type-graphql"
 import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 import mongoose from "mongoose";
 import {User} from "./User";
+import {ObjectId} from "mongodb";
 
 @ObjectType()
 export class File {
+    @Field()
+    readonly _id: ObjectId;
+
     @Field() @Property({required: true})
     fileName!: string;
 

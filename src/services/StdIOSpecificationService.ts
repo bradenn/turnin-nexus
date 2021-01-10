@@ -43,10 +43,22 @@ export default {
         if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
         return stdIOSpecificationRecord;
     },
+    async removeProvidedFile(stdIOSpecificationId: ObjectId, fileId: ObjectId) {
+        const fileRecord = await FileService.deleteFile(fileId);
+        if(!fileRecord) throw new Error('Failed to delete file.');
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$pullAll: {specificationRequiredFiles: [fileRecord._id]}});
+        if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
+        return stdIOSpecificationRecord;
+    },
     async getStdIOSpecification(stdIOSpecificationId): Promise<StdIOSpecification> {
         const stdIOSpecificationRecord = await StdIOSpecificationModel.findOne({_id: stdIOSpecificationId});
         if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
         return stdIOSpecificationRecord;
+    },
+    async getProvidedFiles(stdIOSpecificationId): Promise<File[]> {
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findOne({_id: stdIOSpecificationId}).populate('specificationProvidedFiles');
+        if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
+        return stdIOSpecificationRecord.specificationProvidedFiles;
     },
     async getCourseAssignments(courseId) {
         const assignmentRecord = await AssignmentModel.find({assignmentCourse: courseId});

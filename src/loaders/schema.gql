@@ -50,6 +50,7 @@ input CourseInput {
 }
 
 type File {
+  _id: ObjectId!
   dateCreated: String!
   fileName: String!
   fileOwner: User!
@@ -61,6 +62,7 @@ type Mutation {
   addRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   createAssignment(assignmentInput: AssignmentInput!): Assignment!
   createCourse(courseInput: CourseInput!): Course!
+  removeProvidedFile(fileId: ObjectId!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   removeRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   updateStdIOSpecification(stdIOSpecificationId: ObjectId!, stdIOSpecificationInput: StdIOSpecificationInput!): StdIOSpecification!
 }

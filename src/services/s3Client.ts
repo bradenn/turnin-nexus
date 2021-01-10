@@ -25,7 +25,7 @@ export default {
             s3Client.upload(params, (err, data) => {
                 fileStream.destroy();
                 if (err || !data) reject(err);
-                resolve(data.Key);
+                if(data) resolve(data.Key);
             })
         });
     },

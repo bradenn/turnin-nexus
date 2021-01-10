@@ -48,6 +48,18 @@ export class StdIOSpecificationResolver {
         return await stdIOSpecificationService.addProvidedFile(stdIOSpecificationId, fileUpload, userId);
     }
 
+    @Mutation(returns => StdIOSpecification)
+    async removeProvidedFile(@Ctx() {userId}: Context,
+                          @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                          @Arg("fileId", type => ObjectIdScalar) fileUpload: ObjectId): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.removeProvidedFile(stdIOSpecificationId, fileUpload);
+    }
+
+    @FieldResolver(returns => [File])
+    async specificationProvidedFiles(@Root() stdIOSpecification: StdIOSpecification): Promise<File[]> {
+        return await stdIOSpecificationService.getProvidedFiles(stdIOSpecification)
+    }
+
 
     @FieldResolver(returns => Course)
     async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {

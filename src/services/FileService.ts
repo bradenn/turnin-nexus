@@ -2,6 +2,7 @@ import {File, FileModel} from '../schemas/File';
 import s3Client from "./s3Client";
 import {ObjectId} from "mongodb";
 import * as Stream from "stream";
+import config from "../config";
 
 
 export default {
@@ -19,18 +20,19 @@ export default {
                     fileReference: reference
                 }).then(document => {
                     resolve(document._id);
-                    console.log(reference)
                 }).catch(error => {
                     reject(error);
                 });
             });
         });
     },
-    deleteFile(fileId: string) {
+    deleteFile(fileId: ObjectId): Promise<File> {
         return new Promise((resolve, reject) => {
-            FileModel.findOne({_id: fileId}).then(document => {
+            FileModel.findById(fileId).then(document => {
                 s3Client.deleteFile(document.fileReference).then(() => {
-                    FileModel.deleteOne({_id: fileId}).then(status => resolve(status));
+                    FileModel.deleteOne({_id: fileId})
+                        .then(() => resolve(document))
+                        .catch((err) => reject(err))
                 }).catch(error => reject(error));
             }).catch(error => reject(error));
         });
