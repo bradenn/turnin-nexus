@@ -57,9 +57,11 @@ type File {
 }
 
 type Mutation {
+  addProvidedFile(fileUpload: Upload!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   addRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   createAssignment(assignmentInput: AssignmentInput!): Assignment!
   createCourse(courseInput: CourseInput!): Course!
+  removeRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   updateStdIOSpecification(stdIOSpecificationId: ObjectId!, stdIOSpecificationInput: StdIOSpecificationInput!): StdIOSpecification!
 }
 
@@ -69,6 +71,7 @@ scalar ObjectId
 type Query {
   assignment(assignmentId: ObjectId!): Assignment!
   course(courseId: ObjectId!): Course!
+  file(fileId: ObjectId!): File!
   instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
   stdIOSpecification(stdIOSpecificationId: ObjectId!): StdIOSpecification!
@@ -105,6 +108,9 @@ type StdIOTestSpecification {
   testOutput: File!
   testTimeout: Float!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   _id: ObjectId!

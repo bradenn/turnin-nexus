@@ -6,10 +6,10 @@ import {ObjectId} from "mongodb";
 import {Assignment} from "../schemas/Assignment";
 import {Course} from "../schemas/Course";
 import courseService from "../services/CourseService";
-import {CourseInput} from "./inputs/CourseInput";
-import {AssignmentInput} from "./inputs/AssignmentInput";
 import {StdIOSpecification} from "../schemas/StdIOSpecification";
 import {StdIOSpecificationInput} from "./inputs/StdIOSpecificationInput";
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import {FileInput} from "./inputs/FileInput";
 
 @Resolver(of => StdIOSpecification)
 export class StdIOSpecificationResolver {
@@ -29,15 +29,31 @@ export class StdIOSpecificationResolver {
 
     @Mutation(returns => StdIOSpecification)
     async addRequiredFile(@Ctx() {userId}: Context,
-                                   @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
-                                   @Arg("file") file: string): Promise<StdIOSpecification> {
+                          @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                          @Arg("file") file: string): Promise<StdIOSpecification> {
         return await stdIOSpecificationService.addRequiredFile(stdIOSpecificationId, file);
     }
+
+    @Mutation(returns => StdIOSpecification)
+    async removeRequiredFile(@Ctx() {userId}: Context,
+                             @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                             @Arg("file") file: string): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.removeRequiredFile(stdIOSpecificationId, file);
+    }
+
+    @Mutation(returns => StdIOSpecification)
+    async addProvidedFile(@Ctx() {userId}: Context,
+                             @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                             @Arg("fileUpload", type => GraphQLUpload) fileUpload: FileUpload): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.addProvidedFile(stdIOSpecificationId, fileUpload, userId);
+    }
+
 
     @FieldResolver(returns => Course)
     async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {
         return await courseService.getCourse(assignment.assignmentCourse)
     }
+
 
 }
 

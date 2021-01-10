@@ -16,7 +16,7 @@ export class StdIOSpecification {
     @Field() @Property({default: 5000})
     specificationCompilationTimeout!: number;
 
-    @Field(type => [String]) @Property({required: true, type: [String]})
+    @Field(type => [String]) @Property({type: [String], default: []})
     specificationRequiredFiles!: string[];
 
     @Field(type => [File]) @Property({ref: "File", default: []})

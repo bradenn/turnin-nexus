@@ -11,7 +11,9 @@
   "license": "MIT",
   "dependencies": {
     "@typegoose/typegoose": "^7.4.6",
+    "@types/graphql-upload": "^8.0.4",
     "apollo-server-express": "^2.19.1",
+    "apollo-upload-server": "^7.1.0",
     "aws-sdk": "^2.816.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",

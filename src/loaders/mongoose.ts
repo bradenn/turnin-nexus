@@ -7,7 +7,7 @@ export default () => {
         mongoose.set('useCreateIndex', true);
         /* Define Mongoose Options*/
         const mongooseOptions = {
-            useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true
+            useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false
         };
         /* Create Mongoose Connection */
         mongoose.connect(config.MONGO, mongooseOptions)

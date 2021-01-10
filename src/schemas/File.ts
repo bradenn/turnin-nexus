@@ -11,7 +11,7 @@ export class File {
     @Field() @Property()
     fileReference: string;
 
-    @Field(type => User) @Property({required: true, ref: () => User})
+    @Field(type => User) @Property({required: true, ref: "User"})
     fileOwner!: User;
 
     @Field() @Property({default: Date.now})

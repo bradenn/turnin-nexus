@@ -2,6 +2,10 @@ import {AssignmentModel} from "../schemas/Assignment";
 import {StdIOSpecification, StdIOSpecificationModel} from "../schemas/StdIOSpecification";
 import {ObjectId} from "mongodb";
 import {StdIOSpecificationInput} from "../resolvers/inputs/StdIOSpecificationInput";
+import {FileUpload, UploadOptions} from "graphql-upload";
+import s3Client from "./s3Client";
+import FileService from "./FileService";
+import {FileInput} from "../resolvers/inputs/FileInput";
 
 
 export default {
@@ -23,7 +27,19 @@ export default {
         return stdIOSpecificationRecord;
     },
     async addRequiredFile(stdIOSpecificationId: ObjectId, fileName: string) {
-        const stdIOSpecificationRecord = await StdIOSpecificationModel.findOneAndUpdate({_id: stdIOSpecificationId}, {specificationRequiredFiles: {$push: fileName}});
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$addToSet: {specificationRequiredFiles: [fileName]}});
+        if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
+        return stdIOSpecificationRecord;
+    },
+    async removeRequiredFile(stdIOSpecificationId: ObjectId, fileName: string) {
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$pullAll: {specificationRequiredFiles: [fileName]}});
+        if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
+        return stdIOSpecificationRecord;
+    },
+    async addProvidedFile(stdIOSpecificationId: ObjectId, fileUpload: FileUpload, userId: ObjectId) {
+        const {createReadStream, filename} = fileUpload;
+        const file = await FileService.createFile(filename, userId, createReadStream());
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$addToSet: {specificationProvidedFiles: [file]}});
         if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
         return stdIOSpecificationRecord;
     },

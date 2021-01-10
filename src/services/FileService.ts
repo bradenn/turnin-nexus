@@ -1,6 +1,7 @@
 import {File, FileModel} from '../schemas/File';
 import s3Client from "./s3Client";
 import {ObjectId} from "mongodb";
+import * as Stream from "stream";
 
 
 export default {
@@ -9,9 +10,9 @@ export default {
         if(!fileRecord) throw new Error('File not found.');
         return fileRecord;
     },
-    createFile(fileName: string, fileOwner: string, fileBuffer: Buffer): Promise<string> {
+    createFile(fileName: string, fileOwner: ObjectId, fileStream: Stream): Promise<string> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(fileName, fileBuffer).then(reference => {
+            s3Client.uploadFile(fileName, fileStream).then(reference => {
                 FileModel.create({
                     fileName: fileName,
                     fileOwner: fileOwner,

@@ -13,3 +13,17 @@ export class StdIOSpecificationInput {
     @Field(type => [String])
     specificationRequiredFiles!: string[];
 }
+
+@InputType()
+export class StdIOSpecificationFileUpload {
+
+    @Field()
+    specificationCompilationCommand: string;
+
+    @Field()
+    specificationCompilationTimeout: number;
+
+    @Field(type => [String])
+    specificationRequiredFiles!: string[];
+}
+

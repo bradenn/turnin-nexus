@@ -14,17 +14,16 @@ function getClient() {
 }
 
 export default {
-    uploadFile(fileName, fileBuffer) {
+    uploadFile(fileName, fileStream) {
         return new Promise((resolve, reject) => {
             const s3Client = getClient();
-            const readStream = Readable.from(fileBuffer.toString());
             const params = {
                 Bucket: config.S3_BUCKET,
                 Key: `${v4().toString()}`,
-                Body: readStream
+                Body: fileStream
             };
             s3Client.upload(params, (err, data) => {
-                readStream.destroy();
+                fileStream.destroy();
                 if (err || !data) reject(err);
                 resolve(data.Key);
             })
