@@ -27,7 +27,7 @@ export default app => {
                 uploads: false,
                 // @ts-ignore
                 schema, context: ({req}) => ({req, userId: req.user as User}), debug: true
-            });
+            });23019863
             app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
             app.use(server.getMiddleware())
 

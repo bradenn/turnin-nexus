@@ -10,8 +10,6 @@ export class StdIOSpecificationInput {
     @Field()
     specificationCompilationTimeout: number;
 
-    @Field(type => [String])
-    specificationRequiredFiles!: string[];
 }
 
 @InputType()

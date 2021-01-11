@@ -41,6 +41,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "performance-now": "^2.1.0",
+    "streamifier": "^0.1.1",
+    "tar-stream": "^2.2.0",
     "ts-node": "^9.1.1",
     "type-graphql": "^1.1.1",
     "typegoose": "^5.9.1",

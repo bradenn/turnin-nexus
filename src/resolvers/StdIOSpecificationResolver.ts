@@ -8,8 +8,9 @@ import {Course} from "../schemas/Course";
 import courseService from "../services/CourseService";
 import {StdIOSpecification} from "../schemas/StdIOSpecification";
 import {StdIOSpecificationInput} from "./inputs/StdIOSpecificationInput";
-import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import {GraphQLUpload, FileUpload} from 'graphql-upload';
 import {FileInput} from "./inputs/FileInput";
+import {StdIOTestSpecification} from "../schemas/StdIOTestSpecification";
 
 @Resolver(of => StdIOSpecification)
 export class StdIOSpecificationResolver {
@@ -27,6 +28,7 @@ export class StdIOSpecificationResolver {
         return await stdIOSpecificationService.editStdIOSpecification(stdIOSpecificationId, stdIOSpecificationInput);
     }
 
+    /* Required Files */
     @Mutation(returns => StdIOSpecification)
     async addRequiredFile(@Ctx() {userId}: Context,
                           @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
@@ -41,25 +43,38 @@ export class StdIOSpecificationResolver {
         return await stdIOSpecificationService.removeRequiredFile(stdIOSpecificationId, file);
     }
 
-    @Mutation(returns => StdIOSpecification)
-    async addProvidedFile(@Ctx() {userId}: Context,
-                             @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
-                             @Arg("fileUpload", type => GraphQLUpload) fileUpload: FileUpload): Promise<StdIOSpecification> {
-        return await stdIOSpecificationService.addProvidedFile(stdIOSpecificationId, fileUpload, userId);
-    }
-
-    @Mutation(returns => StdIOSpecification)
-    async removeProvidedFile(@Ctx() {userId}: Context,
-                          @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
-                          @Arg("fileId", type => ObjectIdScalar) fileUpload: ObjectId): Promise<StdIOSpecification> {
-        return await stdIOSpecificationService.removeProvidedFile(stdIOSpecificationId, fileUpload);
-    }
-
+    /* Provided Files */
     @FieldResolver(returns => [File])
     async specificationProvidedFiles(@Root() stdIOSpecification: StdIOSpecification): Promise<File[]> {
         return await stdIOSpecificationService.getProvidedFiles(stdIOSpecification)
     }
 
+    @Mutation(returns => StdIOSpecification)
+    async addProvidedFile(@Ctx() {userId}: Context,
+                          @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                          @Arg("fileUpload", type => GraphQLUpload) fileUpload: FileUpload): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.addProvidedFile(stdIOSpecificationId, fileUpload, userId);
+    }
+
+    @Mutation(returns => StdIOSpecification)
+    async removeProvidedFile(@Ctx() {userId}: Context,
+                             @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                             @Arg("fileId", type => ObjectIdScalar) fileUpload: ObjectId): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.removeProvidedFile(stdIOSpecificationId, fileUpload);
+    }
+
+    /* Tests */
+    @Mutation(returns => StdIOSpecification)
+    async addCompressedTests(@Ctx() {userId}: Context,
+                             @Arg("stdIOSpecificationId", type => ObjectIdScalar) stdIOSpecificationId: ObjectId,
+                             @Arg("fileUpload", type => GraphQLUpload) fileUpload: FileUpload): Promise<StdIOSpecification> {
+        return await stdIOSpecificationService.addCompressedTests(stdIOSpecificationId, fileUpload, userId);
+    }
+
+    @FieldResolver(returns => [StdIOTestSpecification])
+    async specificationTests(@Root() stdIOSpecification: StdIOSpecification): Promise<StdIOTestSpecification[]> {
+        return await stdIOSpecificationService.getSpecificationTests(stdIOSpecification._id)
+    }
 
     @FieldResolver(returns => Course)
     async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {

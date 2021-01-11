@@ -4,8 +4,10 @@ import {ObjectId} from "mongodb";
 import {StdIOSpecificationInput} from "../resolvers/inputs/StdIOSpecificationInput";
 import {FileUpload, UploadOptions} from "graphql-upload";
 import s3Client from "./s3Client";
-import FileService from "./FileService";
+import FileService, {IGroupedAndNamedFileBuffer, INamedFileBuffer} from "./FileService";
 import {FileInput} from "../resolvers/inputs/FileInput";
+import TestService from "./TestService";
+import {StdIOTestSpecification} from "../schemas/StdIOTestSpecification";
 
 
 export default {
@@ -43,9 +45,20 @@ export default {
         if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
         return stdIOSpecificationRecord;
     },
+    async addCompressedTests(stdIOSpecificationId: ObjectId, fileUpload: FileUpload, userId: ObjectId) {
+        const {createReadStream} = fileUpload;
+        const testIds = await FileService.decompressArchive(createReadStream())
+            .then((namedFileBuffer: IGroupedAndNamedFileBuffer[]) =>
+                TestService.generateTestsFromNamedFileBuffers(namedFileBuffer, userId))
+            .then(data => data);
+
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$addToSet: {specificationTests: testIds}});
+        if (!stdIOSpecificationRecord) throw new Error('Failed to find stdIOSpecification');
+        return stdIOSpecificationRecord;
+    },
     async removeProvidedFile(stdIOSpecificationId: ObjectId, fileId: ObjectId) {
         const fileRecord = await FileService.deleteFile(fileId);
-        if(!fileRecord) throw new Error('Failed to delete file.');
+        if (!fileRecord) throw new Error('Failed to delete file.');
         const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$pullAll: {specificationRequiredFiles: [fileRecord._id]}});
         if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
         return stdIOSpecificationRecord;
@@ -59,6 +72,11 @@ export default {
         const stdIOSpecificationRecord = await StdIOSpecificationModel.findOne({_id: stdIOSpecificationId}).populate('specificationProvidedFiles');
         if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
         return stdIOSpecificationRecord.specificationProvidedFiles;
+    },
+    async getSpecificationTests(stdIOSpecificationId): Promise<StdIOTestSpecification[]> {
+        const stdIOSpecificationRecord = await StdIOSpecificationModel.findOne({_id: stdIOSpecificationId}).populate('specificationTests');
+        if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
+        return stdIOSpecificationRecord.specificationTests;
     },
     async getCourseAssignments(courseId) {
         const assignmentRecord = await AssignmentModel.find({assignmentCourse: courseId});

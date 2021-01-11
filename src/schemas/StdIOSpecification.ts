@@ -10,7 +10,7 @@ export class StdIOSpecification {
     @Field()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @Field() @Property({required: true, default: "make"})
     specificationCompilationCommand!: string;
 
     @Field() @Property({default: 5000})
