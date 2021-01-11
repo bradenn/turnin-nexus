@@ -2,8 +2,6 @@ import {ObjectId} from "mongodb";
 import FileService, {IGroupedAndNamedFileBuffer} from "./FileService";
 import {Readable} from 'stream';
 import {StdIOTestSpecification, StdIOTestSpecificationModel} from "../schemas/StdIOTestSpecification";
-import {StdIOSpecificationModel} from "../schemas/StdIOSpecification";
-import {File} from "../schemas/File";
 
 interface ITestSpecification {
     testName: string;
@@ -17,7 +15,6 @@ export default {
     async generateTestsFromNamedFileBuffers(namedFileBuffers: IGroupedAndNamedFileBuffer[], userId: ObjectId): Promise<ObjectId[]> {
         return new Promise((resolve, reject) => {
             // One Test Per Loop
-
             Promise.all(namedFileBuffers.map(testRecord => {
                     let testSpecification: ITestSpecification = {
                         testExitCode: 0,

@@ -1,14 +1,14 @@
 {
   "name": "turnin-nexus",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "GraphQL Api Gateway for Turnin.co Application Services",
   "main": "src/index.js",
-  "author": "Braden Nicholson",
+  "author": "Braden Nicholson <dev@bradenn.com> (https://www.bradenn.com)",
   "scripts": {
     "nodemon": "nodemon src/index.ts",
     "build": "tsc"
   },
-  "license": "MIT",
+  "license": "UNLICENSED",
   "dependencies": {
     "@typegoose/typegoose": "^7.4.6",
     "@types/graphql-upload": "^8.0.4",

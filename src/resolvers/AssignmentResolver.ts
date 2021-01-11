@@ -25,6 +25,8 @@ export class AssignmentResolver {
         return await assignmentService.createAssignment(assignmentInput, userId)
     }
 
+    /* Field Resolvers */
+
     @FieldResolver(returns => Course)
     async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {
         return await courseService.getCourse(assignment.assignmentCourse)
