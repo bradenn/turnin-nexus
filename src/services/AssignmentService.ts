@@ -11,7 +11,6 @@ export default {
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
         return assignmentRecord;
     },
-
     async getAssignment(assignmentId, userId) {
         const assignmentRecord = await AssignmentModel.findOne({_id: assignmentId});
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');

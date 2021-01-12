@@ -8,8 +8,7 @@ import {Course} from "../schemas/Course";
 import courseService from "../services/CourseService";
 import {StdIOSpecification} from "../schemas/StdIOSpecification";
 import {StdIOSpecificationInput} from "./inputs/StdIOSpecificationInput";
-import {GraphQLUpload, FileUpload} from 'graphql-upload';
-import {FileInput} from "./inputs/FileInput";
+import {FileUpload, GraphQLUpload} from 'graphql-upload';
 import {StdIOTestSpecification} from "../schemas/StdIOTestSpecification";
 
 @Resolver(of => StdIOSpecification)
@@ -73,7 +72,7 @@ export class StdIOSpecificationResolver {
 
     @FieldResolver(returns => [StdIOTestSpecification])
     async specificationTests(@Root() stdIOSpecification: StdIOSpecification): Promise<StdIOTestSpecification[]> {
-        return await stdIOSpecificationService.getSpecificationTests(stdIOSpecification._id)
+        return await stdIOSpecificationService.getSpecificationTests(stdIOSpecification.specificationTests)
     }
 
     @FieldResolver(returns => Course)

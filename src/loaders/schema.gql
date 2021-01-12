@@ -67,6 +67,7 @@ type Mutation {
   removeProvidedFile(fileId: ObjectId!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   removeRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
   updateStdIOSpecification(stdIOSpecificationId: ObjectId!, stdIOSpecificationInput: StdIOSpecificationInput!): StdIOSpecification!
+    uploadSubmission(assignmentId: ObjectId!, submissionUpload: [Upload!]!): Assignment!
 }
 
 """Mongo object id scalar type"""
@@ -102,15 +103,15 @@ input StdIOSpecificationInput {
 type StdIOTestSpecification {
   _id: ObjectId!
   dateCreated: String!
-  testArguments: [String!]!
-  testError: File!
-  testExitCode: Float!
-  testInput: File!
-  testIsHidden: Boolean
+    testArguments: [String!]!
+    testError: File
+    testExitCode: Float!
+    testInput: File
+    testIsHidden: Boolean
   testMemoryLeaks: Boolean
-  testName: String!
-  testOutput: File!
-  testTimeout: Float!
+    testName: String!
+    testOutput: File
+    testTimeout: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""

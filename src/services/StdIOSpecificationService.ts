@@ -2,12 +2,10 @@ import {AssignmentModel} from "../schemas/Assignment";
 import {StdIOSpecification, StdIOSpecificationModel} from "../schemas/StdIOSpecification";
 import {ObjectId} from "mongodb";
 import {StdIOSpecificationInput} from "../resolvers/inputs/StdIOSpecificationInput";
-import {FileUpload, UploadOptions} from "graphql-upload";
-import s3Client from "./s3Client";
-import FileService, {IGroupedAndNamedFileBuffer, INamedFileBuffer} from "./FileService";
-import {FileInput} from "../resolvers/inputs/FileInput";
+import {FileUpload} from "graphql-upload";
+import FileService, {IGroupedAndNamedFileBuffer} from "./FileService";
 import TestService from "./TestService";
-import {StdIOTestSpecification} from "../schemas/StdIOTestSpecification";
+import {StdIOTestSpecification, StdIOTestSpecificationModel} from "../schemas/StdIOTestSpecification";
 
 
 export default {
@@ -73,10 +71,10 @@ export default {
         if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
         return stdIOSpecificationRecord.specificationProvidedFiles;
     },
-    async getSpecificationTests(stdIOSpecificationId): Promise<StdIOTestSpecification[]> {
-        const stdIOSpecificationRecord = await StdIOSpecificationModel.findOne({_id: stdIOSpecificationId}).populate('specificationTests');
+    async getSpecificationTests(stdIOTestSpecifications: StdIOTestSpecification[]): Promise<StdIOTestSpecification[]> {
+        const stdIOSpecificationRecord = await StdIOTestSpecificationModel.find({_id: stdIOTestSpecifications}).populate(['testInput', 'testOutput', 'testError'])
         if (!stdIOSpecificationRecord) throw new Error('Failed to get the stdIOSpecification.');
-        return stdIOSpecificationRecord.specificationTests;
+        return stdIOSpecificationRecord;
     },
     async getCourseAssignments(courseId) {
         const assignmentRecord = await AssignmentModel.find({assignmentCourse: courseId});

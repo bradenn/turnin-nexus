@@ -27,13 +27,13 @@ export class StdIOTestSpecification {
     @Field(type => Number) @Property({default: 0})
     testExitCode: number;
 
-    @Field(type => File) @Property({ref: "File"})
+    @Field(type => File, {nullable: true}) @Property({ref: "File"})
     testInput: File;
 
-    @Field(type => File) @Property({ref: "File"})
+    @Field(type => File, {nullable: true}) @Property({ref: "File"})
     testOutput: File;
 
-    @Field(type => File) @Property({ref: "File"})
+    @Field(type => File, {nullable: true}) @Property({ref: "File"})
     testError: File;
 
     @Field() @Property({default: Date.now})

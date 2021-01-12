@@ -2,6 +2,7 @@ import {ApolloServer} from "apollo-server-express";
 import {buildSchema} from "type-graphql";
 import {ObjectId} from "mongodb";
 import {CourseResolver} from "../resolvers/CourseResolver";
+import {SubmissionResolver} from "../resolvers/SubmissionResolver";
 import {UserResolver} from "../resolvers/UserResolver";
 import {StdIOSpecificationResolver} from "../resolvers/StdIOSpecificationResolver";
 import * as path from "path";
@@ -10,14 +11,14 @@ import {User} from "../schemas/User";
 import {TypegooseMiddleware} from "../middleware/typegoose";
 import {AssignmentResolver} from "../resolvers/AssignmentResolver";
 import {FileResolver} from "../resolvers/FileResolver";
-import { graphqlUploadExpress } from 'graphql-upload';
+import {graphqlUploadExpress} from 'graphql-upload';
 
 export default app => {
     return new Promise(resolve => {
 
 
         buildSchema({
-            resolvers: [CourseResolver, AssignmentResolver, UserResolver, StdIOSpecificationResolver, FileResolver],
+            resolvers: [CourseResolver, AssignmentResolver, UserResolver, StdIOSpecificationResolver, FileResolver, SubmissionResolver],
             emitSchemaFile: path.resolve(__dirname, "schema.gql"),
             globalMiddlewares: [TypegooseMiddleware],
             scalarsMap: [{type: ObjectId, scalar: ObjectIdScalar}],
