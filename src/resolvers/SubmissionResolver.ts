@@ -16,6 +16,7 @@ export class SubmissionResolver {
     async uploadSubmission(@Ctx() {userId}: Context,
                            @Arg("assignmentId", type => ObjectIdScalar) assignmentId: ObjectId,
                            @Arg("submissionUpload", type => [GraphQLUpload]) submissionUpload: FileUpload[]): Promise<Assignment> {
+
         return await submissionService.uploadSubmission(assignmentId, userId, submissionUpload);
     }
 

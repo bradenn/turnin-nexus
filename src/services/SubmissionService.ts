@@ -1,24 +1,33 @@
 import {FileUpload} from "graphql-upload";
 import {ObjectId} from "mongodb";
 import FileService from "./FileService";
-import {File} from "../schemas/File";
-import {Assignment, AssignmentModel} from "../schemas/Assignment";
+import {AssignmentModel} from "../schemas/Assignment";
 import {StdIOTestSpecificationModel} from "../schemas/StdIOTestSpecification";
+import {StdIOSpecificationModel} from "../schemas/StdIOSpecification";
 
 
 export default {
-    async uploadSubmission(assignmentId: ObjectId, userId: ObjectId, submissionUpload: FileUpload[]): Promise<Assignment> {
-        console.log(submissionUpload[0].filename)
-        const assignment = await AssignmentModel.findById(assignmentId).populate('assignmentSpecification').exec();
-        console.log("Found assignment...")
+    async uploadSubmission(assignmentId: ObjectId, userId: ObjectId, submissionUpload: FileUpload[]) {
+        const assignment = await AssignmentModel
+            .findById(assignmentId).populate('assignmentSpecification').exec();
 
-        console.log("About to Ingurgitated Files...")
-        const ingurgitatedFiles: File[] = await Promise.all(submissionUpload.map(file => FileService.ingurgitateFile(file, userId)));
-        console.log("Ingurgitated Files...")
-        const specification = assignment.assignmentSpecification;
-        const tests = await StdIOTestSpecificationModel.find({_id: specification.specificationTests}).exec();
-        const submissionBody = {
-            submissionFiles: ingurgitatedFiles.map(file => ({
+        const specification = await StdIOSpecificationModel
+            .findById(assignment.assignmentSpecification)
+            .populate('specificationProvidedFiles').exec();
+
+        const rawFiles = await Promise.all(submissionUpload.map(file => Promise.resolve(file)))
+
+        const files = await Promise.all(rawFiles.map(file => {
+            const {filename, createReadStream} = file;
+            return FileService.tradeFile(filename, createReadStream(), userId).then(file => file)
+        }));
+
+        const tests = await StdIOTestSpecificationModel
+            .find({_id: specification.specificationTests})
+            .populate(['testInput', 'testOutput', 'testError']).exec();
+
+        console.log(JSON.stringify({
+            submissionFiles: files.concat(specification.specificationProvidedFiles).map(file => ({
                 fileName: file.fileName,
                 fileReference: file.fileReference
             })),
@@ -27,11 +36,7 @@ export default {
                 compilationCommand: specification.specificationCompilationCommand,
                 compilationTimeout: specification.specificationCompilationTimeout
             }
-        }
-        console.log(submissionBody);
-
-        return assignment;
-
-
+        }));
+        return assignment
     }
 }

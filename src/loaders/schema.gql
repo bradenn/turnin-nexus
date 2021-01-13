@@ -101,14 +101,14 @@ input StdIOSpecificationInput {
 }
 
 type StdIOTestSpecification {
-  _id: ObjectId!
-  dateCreated: String!
+    _id: ObjectId!
+    dateCreated: String!
     testArguments: [String!]!
     testError: File
     testExitCode: Float!
     testInput: File
     testIsHidden: Boolean
-  testMemoryLeaks: Boolean
+    testMemoryLeaks: Boolean
     testName: String!
     testOutput: File
     testTimeout: Float!

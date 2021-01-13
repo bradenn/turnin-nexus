@@ -38,7 +38,7 @@ export default {
     },
     async addProvidedFile(stdIOSpecificationId: ObjectId, fileUpload: FileUpload, userId: ObjectId) {
         const {createReadStream, filename} = fileUpload;
-        const file = await FileService.createFile(filename, userId, createReadStream());
+        const file = await FileService.createFile(filename, createReadStream(), userId);
         const stdIOSpecificationRecord = await StdIOSpecificationModel.findByIdAndUpdate(stdIOSpecificationId, {$addToSet: {specificationProvidedFiles: [file]}});
         if (!stdIOSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
         return stdIOSpecificationRecord;

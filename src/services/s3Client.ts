@@ -1,13 +1,15 @@
 import config from '../config';
 import AWS from 'aws-sdk';
-import {Readable} from 'stream';
 import {v4} from "uuid";
 
 function getClient() {
+    let endpoint = new AWS.Endpoint(config.S3_ENDPOINT)
+    endpoint.port = parseInt(config.S3_PORT);
+    endpoint.protocol = 'http';
     const s3Options = {
         accessKeyId: config.S3_ACCESS,
         secretAccessKey: config.S3_SECRET,
-        endpoint: config.S3_ENDPOINT,
+        endpoint: endpoint,
         s3ForcePathStyle: true
     };
     return new AWS.S3(s3Options);

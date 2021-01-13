@@ -4,7 +4,6 @@ import {ObjectId} from "mongodb";
 import Stream from "stream";
 import tar from "tar-stream"
 import {createGunzip} from "zlib";
-import {FileUpload} from "graphql-upload";
 
 export interface INamedFileBuffer {
     fileName: string;
@@ -74,12 +73,12 @@ export default {
 
         });
     },
-    ingurgitateFile(file: FileUpload, userId: ObjectId): Promise<File> {
+    tradeFile(fileName: string, fileStream: Stream, fileOwner: ObjectId): Promise<File> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(file.filename, file.createReadStream()).then(reference => {
+            s3Client.uploadFile(fileName, fileStream).then(reference => {
                 FileModel.create({
-                    fileName: file.filename,
-                    fileOwner: userId,
+                    fileName: fileName,
+                    fileOwner: fileOwner,
                     fileReference: reference
                 }).then(document => {
                     resolve(document);
@@ -89,7 +88,7 @@ export default {
             });
         });
     },
-    createFile(fileName: string, fileOwner: ObjectId, fileStream: Stream): Promise<ObjectId> {
+    createFile(fileName: string, fileStream: Stream, fileOwner: ObjectId): Promise<ObjectId> {
         return new Promise((resolve, reject) => {
             s3Client.uploadFile(fileName, fileStream).then(reference => {
                 FileModel.create({

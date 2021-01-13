@@ -18,7 +18,7 @@ export class Course {
     @Field() @Property()
     courseDescription!: string;
 
-    @Field(type => User) @Property({required: true, ref: () => User})
+    @Field(type => User) @Property({required: true, ref: "User"})
     courseInstructor!: User
 
     @Field() @Property({default: false})
