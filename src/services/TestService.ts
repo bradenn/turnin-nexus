@@ -1,7 +1,7 @@
 import {ObjectId} from "mongodb";
 import FileService, {IGroupedAndNamedFileBuffer} from "./FileService";
 import {Readable} from 'stream';
-import {StdIOTestSpecification, StdIOTestSpecificationModel} from "../schemas/StdIOTestSpecification";
+import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
 
 interface ITestSpecification {
     testName: string;
@@ -38,12 +38,12 @@ export default {
                         .then(spec => {
                             return spec._id;
                         });
-                })).then(testIds => resolve(testIds));
+            })).then(testIds => resolve(testIds));
         });
     },
-    async createTestSpecification(testBody): Promise<StdIOTestSpecification> {
-        const stdIOTestSpecificationRecord = await StdIOTestSpecificationModel.create(testBody);
-        if (!stdIOTestSpecificationRecord) throw new Error('Failed to update stdIOSpecification');
-        return stdIOTestSpecificationRecord;
+    async createTestSpecification(testBody): Promise<TestSpecification> {
+        const TestSpecificationRecord = await TestSpecificationModel.create(testBody);
+        if (!TestSpecificationRecord) throw new Error('Failed to update Specification');
+        return TestSpecificationRecord;
     }
 }

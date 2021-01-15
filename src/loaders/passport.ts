@@ -22,19 +22,25 @@ export default (app) => {
         /* Defining Passport Login Strategies */
         passport.use('register', new LocalStrategy({
                 usernameField: 'username',
-                passwordField: 'password'
+                passwordField: 'password',
+                passReqToCallback: true // I couldn't find this in the LocalStrategy Modules, but oh well
             },
-            (req, username, password, done) => {
-                return userService.createUser(
-                    {
-                        username: username,
-                        password: password,
-                        firstname: req.body.firstname,
-                        lastname: req.body.lastname,
-                        email: req.body.email,
-                    })
-                    .then(userRecord => done(null, userRecord, {message: 'ok'}))
-                    .catch(error => done(null, false, {message: error}))
+            async (req, username, password, done) => {
+                try {
+                    const userRecord = await userService.createUser(
+                        {
+                            username: username,
+                            password: password,
+                            firstname: req.body.firstname,
+                            lastname: req.body.lastname,
+                            email: req.body.email,
+                        });
+                    console.log("Created User")
+                    return done(null, userRecord, {message: 'ok'});
+                } catch (error) {
+                    console.log(error)
+                    return done(null, false, {message: error});
+                }
             }));
 
         passport.use('login', new LocalStrategy({
@@ -68,6 +74,22 @@ export default (app) => {
 
         /* Passport Routes */
         app.post('/auth/login', passport.authenticate('login'), (req, res) => {
+            const userRecord: User = req.user;
+            let payload: JwtPayload = {
+                userId: userRecord._id,
+                user: userRecord
+            };
+            jwtService.sign(payload)
+                .then(token => {
+                    return res.json({token: token, user: payload.user})
+                })
+                .catch(error => {
+                    return res.json({message: error})
+                });
+        });
+
+        /* Passport Routes */
+        app.post('/auth/register', passport.authenticate('register'), (req, res) => {
             const userRecord: User = req.user;
             let payload: JwtPayload = {
                 userId: userRecord._id,

@@ -1,6 +1,6 @@
 {
   "name": "turnin-nexus",
-  "version": "1.1.2",
+  "version": "1.2.2",
   "description": "GraphQL Api Gateway for Turnin.co Application Services",
   "main": "src/index.js",
   "author": "Braden Nicholson <dev@bradenn.com> (https://www.bradenn.com)",
@@ -17,6 +17,7 @@
     "apollo-server-express": "^2.19.1",
     "apollo-upload-server": "^7.1.0",
     "aws-sdk": "^2.816.0",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "class-validator": "^0.12.2",

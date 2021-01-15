@@ -1,11 +1,11 @@
 import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property, Ref} from "@typegoose/typegoose"
+import {getModelForClass, prop as Property} from "@typegoose/typegoose"
 import {File} from "./File";
-import {StdIOTestSpecification} from "./StdIOTestSpecification";
+import {TestSpecification} from "./TestSpecification";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
-export class StdIOSpecification {
+export class Specification {
 
     @Field()
     readonly _id: ObjectId;
@@ -22,11 +22,11 @@ export class StdIOSpecification {
     @Field(type => [File]) @Property({ref: "File", default: []})
     specificationProvidedFiles!: File[]
 
-    @Field(type => [StdIOTestSpecification]) @Property({ref: "StdIOTestSpecification", default: []})
-    specificationTests: StdIOTestSpecification[];
+    @Field(type => [TestSpecification]) @Property({ref: "TestSpecification", default: []})
+    specificationTests: TestSpecification[];
 
     @Field() @Property({default: Date.now})
     dateCreated: string
 }
 
-export const StdIOSpecificationModel = getModelForClass(StdIOSpecification);
+export const SpecificationModel = getModelForClass(Specification);

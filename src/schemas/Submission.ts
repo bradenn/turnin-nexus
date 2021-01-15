@@ -4,11 +4,11 @@ import {prop as Property} from "@typegoose/typegoose/lib/prop";
 import {File} from "./File";
 import {Assignment} from "./Assignment";
 import {User} from "./User";
-import {StdIOSubmissionResult} from "./StdIOSubmissionResult";
+import {SubmissionResult} from "./SubmissionResult";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
-export class StdIOSubmission {
+export class Submission {
 
     @Field()
     readonly _id: ObjectId;
@@ -22,12 +22,18 @@ export class StdIOSubmission {
     @Field(type => [File]) @Property({ref: "File", default: []})
     submissionFiles!: Ref<File>[]
 
-    @Field(type => [StdIOSubmissionResult]) @Property({ref: "StdIOSubmissionResult", default: []})
-    submissionResults: Ref<StdIOSubmissionResult>[];
+    @Field(type => [SubmissionResult]) @Property({ref: "SubmissionResult", default: []})
+    submissionResults: Ref<SubmissionResult>[];
+
+    @Field(type => [String], {nullable: true}) @Property({type: [String]})
+    submissionCompilationOutput: string[];
+
+    @Field() @Property({default: ""})
+    submissionCompilationTime: string
 
     @Field() @Property({default: Date.now})
     dateCreated: string
 }
 
-export const StdIOSubmissionModel = getModelForClass(StdIOSubmission);
+export const SubmissionModel = getModelForClass(Submission);
 

@@ -4,7 +4,7 @@ import {File} from "./File"
 import {ObjectId} from "mongodb";
 
 @ObjectType()
-export class StdIOTestSpecification {
+export class TestSpecification {
 
     @Field()
     readonly _id: ObjectId;
@@ -12,7 +12,7 @@ export class StdIOTestSpecification {
     @Field() @Property({required: true})
     testName!: string;
 
-    @Field() @Property({default: 5000})
+    @Field() @Property({default: 50})
     testTimeout: number;
 
     @Field({nullable: true}) @Property({default: false})
@@ -40,5 +40,5 @@ export class StdIOTestSpecification {
     dateCreated: string
 }
 
-export const StdIOTestSpecificationModel = getModelForClass(StdIOTestSpecification);
+export const TestSpecificationModel = getModelForClass(TestSpecification);
 
