@@ -11,8 +11,8 @@ type Assignment {
   assignmentIsAssigned: Boolean!
   assignmentLateDate: String!
   assignmentName: String!
-  assignmentSpecification: StdIOSpecification!
-  dateCreated: String
+    assignmentSpecification: Specification!
+    dateCreated: String
 }
 
 input AssignmentInput {
@@ -59,48 +59,72 @@ type File {
 }
 
 type Mutation {
-  addCompressedTests(fileUpload: Upload!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  addProvidedFile(fileUpload: Upload!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  addRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  createAssignment(assignmentInput: AssignmentInput!): Assignment!
-  createCourse(courseInput: CourseInput!): Course!
-  removeProvidedFile(fileId: ObjectId!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  removeRequiredFile(file: String!, stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  updateStdIOSpecification(stdIOSpecificationId: ObjectId!, stdIOSpecificationInput: StdIOSpecificationInput!): StdIOSpecification!
-    uploadSubmission(assignmentId: ObjectId!, submissionUpload: [Upload!]!): Assignment!
+    addCompressedTests(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
+    addProvidedFile(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
+    addRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
+    createAssignment(assignmentInput: AssignmentInput!): Assignment!
+    createCourse(courseInput: CourseInput!): Course!
+    removeProvidedFile(fileId: ObjectId!, SpecificationId: ObjectId!): Specification!
+    removeRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
+    updateSpecification(SpecificationId: ObjectId!, SpecificationInput: SpecificationInput!): Specification!
+    uploadSubmission(assignmentId: ObjectId!, submissionUpload: [Upload!]!): Submission!
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
-  assignment(assignmentId: ObjectId!): Assignment!
-  course(courseId: ObjectId!): Course!
-  file(fileId: ObjectId!): File!
-  instructorCourse(courseId: ObjectId!): Course!
-  instructorCourses: [Course!]!
-  stdIOSpecification(stdIOSpecificationId: ObjectId!): StdIOSpecification!
-  user(targetId: ObjectId!): User!
-  userSelf: User!
+    assignment(assignmentId: ObjectId!): Assignment!
+    course(courseId: ObjectId!): Course!
+    file(fileId: ObjectId!): File!
+    instructorCourse(courseId: ObjectId!): Course!
+    instructorCourses: [Course!]!
+    Specification(SpecificationId: ObjectId!): Specification!
+    submission(submissionId: ObjectId!): Submission!
+    user(targetId: ObjectId!): User!
+    userSelf: User!
 }
 
-type StdIOSpecification {
-  _id: ObjectId!
-  assignmentCourse: Course!
-  dateCreated: String!
-  specificationCompilationCommand: String!
-  specificationCompilationTimeout: Float!
-  specificationProvidedFiles: [File!]!
-  specificationRequiredFiles: [String!]!
-  specificationTests: [StdIOTestSpecification!]!
+type Specification {
+    _id: ObjectId!
+    assignmentCourse: Course!
+    dateCreated: String!
+    specificationCompilationCommand: String!
+    specificationCompilationTimeout: Float!
+    specificationProvidedFiles: [File!]!
+    specificationRequiredFiles: [String!]!
+    specificationTests: [TestSpecification!]!
 }
 
-input StdIOSpecificationInput {
-  specificationCompilationCommand: String!
-  specificationCompilationTimeout: Float!
+input SpecificationInput {
+    specificationCompilationCommand: String!
+    specificationCompilationTimeout: Float!
 }
 
-type StdIOTestSpecification {
+type Submission {
+    _id: ObjectId!
+    dateCreated: String!
+    submissionAssignment: Assignment!
+    submissionCompilationOutput: [String!]
+    submissionCompilationTime: String!
+    submissionFiles: [File!]!
+    submissionOwner: User!
+    submissionResults: [SubmissionResult!]!
+}
+
+type SubmissionResult {
+    _id: ObjectId!
+    dateCreated: String!
+    exitCode: Float!
+    memoryUsed: Float!
+    resultTest: TestSpecification!
+    testElapsedTime: String!
+    testError: [String!]
+    testOutput: [String!]
+    testPassed: Boolean!
+}
+
+type TestSpecification {
     _id: ObjectId!
     dateCreated: String!
     testArguments: [String!]!
@@ -118,12 +142,12 @@ type StdIOTestSpecification {
 scalar Upload
 
 type User {
-  _id: ObjectId!
-  account: String!
-  courses: [Course!]
-  dateCreated: String!
-  email: Float!
-  firstname: String!
+    _id: ObjectId!
+    account: String!
+    courses: [Course!]
+    dateCreated: String!
+    email: String!
+    firstname: String!
   lastname: String!
   password: String!
   username: String!

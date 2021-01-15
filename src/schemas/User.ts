@@ -33,7 +33,7 @@ export class User {
     username!: string;
 
     @Field() @Property({required: true})
-    email!: number;
+    email!: string;
 
     @Field() @Property({required: true})
     firstname!: string

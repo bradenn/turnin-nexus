@@ -1,17 +1,31 @@
 import {FileUpload} from "graphql-upload";
 import {ObjectId} from "mongodb";
 import FileService from "./FileService";
+// @ts-ignore
+import axios from "axios";
 import {AssignmentModel} from "../schemas/Assignment";
-import {StdIOTestSpecificationModel} from "../schemas/StdIOTestSpecification";
-import {StdIOSpecificationModel} from "../schemas/StdIOSpecification";
+import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
+import {SpecificationModel} from "../schemas/Specification";
+import {Submission, SubmissionModel} from "../schemas/Submission";
+import {SubmissionResultModel} from "../schemas/SubmissionResult";
 
 
 export default {
+    async getTestSpecification(testSpecificationId: ObjectId): Promise<TestSpecification> {
+        const testSpecificationRecord = await TestSpecificationModel.findById(testSpecificationId).exec();
+        if (!testSpecificationRecord) throw new Error("Could not find submission")
+        return testSpecificationRecord
+    },
+    async getSubmission(submissionId: ObjectId, userId: ObjectId): Promise<Submission> {
+        const submissionRecord = await SubmissionModel.findById(submissionId).populate('submissionResults').exec();
+        if (!submissionRecord) throw new Error("Could not find submission")
+        return submissionRecord
+    },
     async uploadSubmission(assignmentId: ObjectId, userId: ObjectId, submissionUpload: FileUpload[]) {
         const assignment = await AssignmentModel
-            .findById(assignmentId).populate('assignmentSpecification').exec();
+            .findById(assignmentId).exec();
 
-        const specification = await StdIOSpecificationModel
+        const specification = await SpecificationModel
             .findById(assignment.assignmentSpecification)
             .populate('specificationProvidedFiles').exec();
 
@@ -22,11 +36,11 @@ export default {
             return FileService.tradeFile(filename, createReadStream(), userId).then(file => file)
         }));
 
-        const tests = await StdIOTestSpecificationModel
+        const tests = await TestSpecificationModel
             .find({_id: specification.specificationTests})
             .populate(['testInput', 'testOutput', 'testError']).exec();
 
-        console.log(JSON.stringify({
+        let payload = {
             submissionFiles: files.concat(specification.specificationProvidedFiles).map(file => ({
                 fileName: file.fileName,
                 fileReference: file.fileReference
@@ -36,7 +50,33 @@ export default {
                 compilationCommand: specification.specificationCompilationCommand,
                 compilationTimeout: specification.specificationCompilationTimeout
             }
-        }));
-        return assignment
+        }
+
+        return axios.post('http://localhost:5050/api/compile', payload).then(data => {
+            const testResults = data.data.submissionTestResults;
+
+            return Promise.all(testResults.map(result => {
+                return SubmissionResultModel.create({
+                    resultTest: result._id,
+                    memoryUsed: result.bytesUsed,
+                    exitCode: result.testExitCode,
+                    testElapsedTime: result.testElapsedTime,
+                    testOutput: result.testOutputDiff,
+                    testError: result.testErrorDiff,
+                    testPassed: result.testPassed
+                }).then(doc => doc._id)
+            })).then(results => {
+                return SubmissionModel.create({
+                    submissionAssignment: assignmentId,
+                    submissionOwner: userId,
+                    submissionFiles: files.map(obj => obj._id),
+                    submissionResults: results,
+                    submissionCompilationOutput: data.data.compilationResults.compilationOutput,
+                    submissionCompilationTime: data.data.compilationResults.compilationTime
+                }).then(doc => {
+                    return doc
+                })
+            })
+        })
     }
 }
