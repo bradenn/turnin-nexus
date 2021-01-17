@@ -3,7 +3,7 @@ import {ObjectId} from "mongodb";
 import FileService from "./FileService";
 // @ts-ignore
 import axios from "axios";
-import {AssignmentModel} from "../schemas/Assignment";
+import {Assignment, AssignmentModel} from "../schemas/Assignment";
 import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
 import {SpecificationModel} from "../schemas/Specification";
 import {Submission, SubmissionModel} from "../schemas/Submission";
@@ -78,5 +78,10 @@ export default {
                 })
             })
         })
+    },
+    async getAssignmentSubmissions(submissionAssignment: Assignment) {
+        const submissionRecord = await SubmissionModel.find({submissionAssignment: submissionAssignment}).populate('submissionResults').exec();
+        if (!submissionRecord) throw new Error("Could not find submissions")
+        return submissionRecord
     }
 }

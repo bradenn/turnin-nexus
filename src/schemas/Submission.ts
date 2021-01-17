@@ -25,6 +25,9 @@ export class Submission {
     @Field(type => [SubmissionResult]) @Property({ref: "SubmissionResult", default: []})
     submissionResults: Ref<SubmissionResult>[];
 
+    @Field(type => Boolean) @Property({default: false, type: Boolean})
+    submissionPassedTest: boolean
+
     @Field(type => [String], {nullable: true}) @Property({type: [String]})
     submissionCompilationOutput: string[];
 

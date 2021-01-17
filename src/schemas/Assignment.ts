@@ -14,7 +14,7 @@ export class Assignment {
     @Field() @Property({required: true})
     assignmentName!: string;
 
-    @Field(type => Course) @Property({required: true, ref: () => Course})
+    @Field(type => Course) @Property({required: true, ref: "Course"})
     assignmentCourse!: Course;
 
     @Field() @Property({required: true})

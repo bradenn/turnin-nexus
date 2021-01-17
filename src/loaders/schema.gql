@@ -11,8 +11,9 @@ type Assignment {
   assignmentIsAssigned: Boolean!
   assignmentLateDate: String!
   assignmentName: String!
-    assignmentSpecification: Specification!
-    dateCreated: String
+  assignmentSpecification: Specification!
+  assignmentSubmissions: [Submission!]!
+  dateCreated: String
 }
 
 input AssignmentInput {
@@ -53,101 +54,106 @@ input CourseInput {
 type File {
   _id: ObjectId!
   dateCreated: String!
+  fileLink: String!
   fileName: String!
   fileOwner: User!
   fileReference: String!
 }
 
 type Mutation {
-    addCompressedTests(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
-    addProvidedFile(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
-    addRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
-    createAssignment(assignmentInput: AssignmentInput!): Assignment!
-    createCourse(courseInput: CourseInput!): Course!
-    removeProvidedFile(fileId: ObjectId!, SpecificationId: ObjectId!): Specification!
-    removeRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
-    updateSpecification(SpecificationId: ObjectId!, SpecificationInput: SpecificationInput!): Specification!
-    uploadSubmission(assignmentId: ObjectId!, submissionUpload: [Upload!]!): Submission!
+  addCompressedTests(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
+  addProvidedFile(fileUpload: Upload!, SpecificationId: ObjectId!): Specification!
+  addRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
+  createAssignment(assignmentInput: AssignmentInput!): Assignment!
+  createCourse(courseInput: CourseInput!): Course!
+  removeProvidedFile(fileId: ObjectId!, SpecificationId: ObjectId!): Specification!
+  removeRequiredFile(file: String!, SpecificationId: ObjectId!): Specification!
+  updateSpecification(SpecificationId: ObjectId!, SpecificationInput: SpecificationInput!): Specification!
+  uploadSubmission(assignmentId: ObjectId!, submissionUpload: [Upload!]!): Submission!
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
-    assignment(assignmentId: ObjectId!): Assignment!
-    course(courseId: ObjectId!): Course!
-    file(fileId: ObjectId!): File!
-    instructorCourse(courseId: ObjectId!): Course!
-    instructorCourses: [Course!]!
-    Specification(SpecificationId: ObjectId!): Specification!
-    submission(submissionId: ObjectId!): Submission!
-    user(targetId: ObjectId!): User!
-    userSelf: User!
+  assignment(assignmentId: ObjectId!): Assignment!
+  course(courseId: ObjectId!): Course!
+  file(fileId: ObjectId!): File!
+  instructorCourse(courseId: ObjectId!): Course!
+  instructorCourses: [Course!]!
+  self: User!
+  Specification(SpecificationId: ObjectId!): Specification!
+  studentAssignments: [Assignment!]!
+  submission(submissionId: ObjectId!): Submission!
+  user(targetId: ObjectId!): User!
+  userSelf: User!
 }
 
 type Specification {
-    _id: ObjectId!
-    assignmentCourse: Course!
-    dateCreated: String!
-    specificationCompilationCommand: String!
-    specificationCompilationTimeout: Float!
-    specificationProvidedFiles: [File!]!
-    specificationRequiredFiles: [String!]!
-    specificationTests: [TestSpecification!]!
+  _id: ObjectId!
+  assignmentCourse: Course!
+  dateCreated: String!
+  specificationCompilationCommand: String!
+  specificationCompilationTimeout: Float!
+  specificationProvidedFiles: [File!]!
+  specificationRequiredFiles: [String!]!
+  specificationTests: [TestSpecification!]!
 }
 
 input SpecificationInput {
-    specificationCompilationCommand: String!
-    specificationCompilationTimeout: Float!
+  specificationCompilationCommand: String!
+  specificationCompilationTimeout: Float!
 }
 
 type Submission {
-    _id: ObjectId!
-    dateCreated: String!
-    submissionAssignment: Assignment!
-    submissionCompilationOutput: [String!]
-    submissionCompilationTime: String!
-    submissionFiles: [File!]!
-    submissionOwner: User!
-    submissionResults: [SubmissionResult!]!
+  _id: ObjectId!
+  dateCreated: String!
+  submissionAssignment: Assignment!
+  submissionCompilationOutput: [String!]
+  submissionCompilationTime: String!
+  submissionFiles: [File!]!
+  submissionOwner: User!
+  submissionPassedTest: Boolean!
+  submissionResults: [SubmissionResult!]!
 }
 
 type SubmissionResult {
-    _id: ObjectId!
-    dateCreated: String!
-    exitCode: Float!
-    memoryUsed: Float!
-    resultTest: TestSpecification!
-    testElapsedTime: String!
-    testError: [String!]
-    testOutput: [String!]
-    testPassed: Boolean!
+  _id: ObjectId!
+  dateCreated: String!
+  exitCode: Float!
+  memoryUsed: Float!
+  resultTest: TestSpecification!
+  testElapsedTime: String!
+  testError: [String!]
+  testOutput: [String!]
+  testPassed: Boolean!
 }
 
 type TestSpecification {
-    _id: ObjectId!
-    dateCreated: String!
-    testArguments: [String!]!
-    testError: File
-    testExitCode: Float!
-    testInput: File
-    testIsHidden: Boolean
-    testMemoryLeaks: Boolean
-    testName: String!
-    testOutput: File
-    testTimeout: Float!
+  _id: ObjectId!
+  dateCreated: String!
+  testArguments: [String!]!
+  testError: File
+  testExitCode: Float!
+  testInput: File
+  testIsHidden: Boolean
+  testMemoryLeaks: Boolean
+  testName: String!
+  testOutput: File
+  testTimeout: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 type User {
-    _id: ObjectId!
-    account: String!
-    courses: [Course!]
-    dateCreated: String!
-    email: String!
-    firstname: String!
+  _id: ObjectId!
+  account: String!
+  courses: [Course!]
+  dateCreated: String!
+  email: String!
+  firstname: String!
+  fullName: String!
   lastname: String!
   password: String!
   username: String!

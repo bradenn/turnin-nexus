@@ -1,4 +1,4 @@
-import {Arg, Ctx, Query, Resolver} from "type-graphql";
+import {Arg, Ctx, FieldResolver, Query, Resolver, Root} from "type-graphql";
 import fileService from "../services/FileService";
 import {Context} from "../schemas/Interfaces";
 import {ObjectIdScalar} from "../schemas/ScalarObjectId";
@@ -14,8 +14,10 @@ export class FileResolver {
         return await fileService.getFile(fileId)
     }
 
-
-
+    @FieldResolver(returns => String)
+    async fileLink(@Root() file: File): Promise<String> {
+        return `${process.env.S3_LINK}/${process.env.S3_BUCKET}/${file.fileReference}`
+    }
 
 }
 

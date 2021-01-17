@@ -9,6 +9,8 @@ import {Assignment} from "../schemas/Assignment";
 import {Course} from "../schemas/Course";
 import {AssignmentInput} from "./inputs/AssignmentInput";
 import {Specification} from "../schemas/Specification";
+import {Submission} from "../schemas/Submission";
+import SubmissionService from "../services/SubmissionService";
 
 @Resolver(of => Assignment)
 export class AssignmentResolver {
@@ -25,6 +27,11 @@ export class AssignmentResolver {
         return await assignmentService.createAssignment(assignmentInput, userId)
     }
 
+    @Query(returns => [Assignment])
+    async studentAssignments(@Ctx() {userId}: Context): Promise<Assignment[]> {
+        return await assignmentService.getStudentAssignments(userId)
+    }
+
     /* Field Resolvers */
 
     @FieldResolver(returns => Course)
@@ -32,9 +39,19 @@ export class AssignmentResolver {
         return await courseService.getCourse(assignment.assignmentCourse)
     }
 
+    @FieldResolver(returns => Course)
+    async assignmentBrief(@Root() assignment: Assignment): Promise<Course> {
+        return await courseService.getCourse(assignment.assignmentCourse)
+    }
+
     @FieldResolver(returns => Specification)
     async assignmentSpecification(@Root() assignment: Assignment): Promise<Specification> {
         return await SpecificationService.getSpecification(assignment.assignmentSpecification._id)
+    }
+
+    @FieldResolver(returns => [Submission])
+    async assignmentSubmissions(@Root() assignment: Assignment): Promise<Submission[]> {
+        return await SubmissionService.getAssignmentSubmissions(assignment)
     }
 
 }
