@@ -13,13 +13,14 @@ import {TypegooseMiddleware} from "../middleware/typegoose";
 import {AssignmentResolver} from "../resolvers/AssignmentResolver";
 import {FileResolver} from "../resolvers/FileResolver";
 import {graphqlUploadExpress} from 'graphql-upload';
+import {TestSpecificationResolver} from "../resolvers/TestSpecificationResolver";
 
 export default app => {
     return new Promise(resolve => {
 
 
         buildSchema({
-            resolvers: [CourseResolver, AssignmentResolver, UserResolver, SpecificationResolver, FileResolver, SubmissionResolver, SubmissionResultResolver],
+            resolvers: [CourseResolver, AssignmentResolver, UserResolver, SpecificationResolver, FileResolver, SubmissionResolver, SubmissionResultResolver, TestSpecificationResolver],
             emitSchemaFile: path.resolve(__dirname, "schema.gql"),
             globalMiddlewares: [TypegooseMiddleware],
             scalarsMap: [{type: ObjectId, scalar: ObjectIdScalar}],

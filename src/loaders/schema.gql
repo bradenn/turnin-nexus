@@ -85,7 +85,8 @@ type Query {
   Specification(SpecificationId: ObjectId!): Specification!
   studentAssignments: [Assignment!]!
   submission(submissionId: ObjectId!): Submission!
-  user(targetId: ObjectId!): User!
+    TestSpecification(TestSpecificationId: ObjectId!): TestSpecification!
+    user(targetId: ObjectId!): User!
   userSelf: User!
 }
 
@@ -132,8 +133,9 @@ type SubmissionResult {
 type TestSpecification {
   _id: ObjectId!
   dateCreated: String!
-  testArguments: [String!]!
-  testError: File
+    testArguments: [String!]!
+    testContext: [String!]!
+    testError: File
   testExitCode: Float!
   testInput: File
   testIsHidden: Boolean

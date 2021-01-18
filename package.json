@@ -6,6 +6,7 @@
   "author": "Braden Nicholson <dev@bradenn.com> (https://www.bradenn.com)",
   "scripts": {
     "nodemon": "nodemon src/index.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "test": "mocha -r ts-node/register tests/**/*.spec.ts",
     "build": "tsc"
   },
