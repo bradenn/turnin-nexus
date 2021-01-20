@@ -11,39 +11,39 @@ export class TestSpecification {
 
     @GraphQL()
     @Mongoose({required: true})
-    testName!: string;
+    name!: string;
 
     @GraphQL()
     @Mongoose({default: 50})
-    testTimeout: number;
+    timeout: number;
 
     @GraphQL({nullable: true})
     @Mongoose({default: false})
-    testMemoryLeaks: boolean;
+    leaks: boolean;
 
     @GraphQL({nullable: true})
     @Mongoose({default: false})
-    testIsHidden: boolean;
+    hidden: boolean;
 
     @GraphQL(type => [String])
     @Mongoose({type: [String], default: []})
-    testArguments: string[];
+    args: string[];
 
     @GraphQL(type => Number)
     @Mongoose({default: 0})
-    testExitCode: number;
+    exit: number;
 
     @GraphQL(type => File, {nullable: true})
     @Mongoose({ref: "File"})
-    testInput: File;
+    stdin: File;
 
     @GraphQL(type => File, {nullable: true})
     @Mongoose({ref: "File"})
-    testOutput: File;
+    stdout: File;
 
     @GraphQL(type => File, {nullable: true})
     @Mongoose({ref: "File"})
-    testError: File;
+    stderr: File;
 
     @GraphQL()
     @Mongoose({default: Date.now})

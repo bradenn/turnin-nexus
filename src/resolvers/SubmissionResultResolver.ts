@@ -8,8 +8,8 @@ import {SubmissionResult} from "../schemas/SubmissionResult";
 export class SubmissionResultResolver {
 
     @FieldResolver(returns => TestSpecification)
-    async resultTest(@Root() submissionResult: SubmissionResult): Promise<TestSpecification> {
-        return await SubmissionService.getTestSpecification(submissionResult.resultTest._id)
+    async test(@Root() submissionResult: SubmissionResult): Promise<TestSpecification> {
+        return await SubmissionService.getTestSpecification(submissionResult.test._id)
     }
 
 }

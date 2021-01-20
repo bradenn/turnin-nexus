@@ -37,8 +37,8 @@ export default {
         return SpecificationRecord;
     },
     async addProvidedFile(SpecificationId: ObjectId, fileUpload: FileUpload, userId: ObjectId) {
-        const {createReadStream, name} = fileUpload;
-        const file = await FileService.createFile(name, createReadStream(), userId);
+        const {createReadStream, filename} = fileUpload;
+        const file = await FileService.createFile(filename, createReadStream(), userId);
         const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$addToSet: {providedFiles: [file]}});
         if (!SpecificationRecord) throw new Error('Failed to update Specification');
         return SpecificationRecord;
@@ -72,7 +72,7 @@ export default {
         return SpecificationRecord.providedFiles;
     },
     async getSpecificationTests(TestSpecifications: TestSpecification[]): Promise<TestSpecification[]> {
-        const SpecificationRecord = await TestSpecificationModel.find({_id: TestSpecifications}).populate(['testInput', 'testOutput', 'testError'])
+        const SpecificationRecord = await TestSpecificationModel.find({_id: TestSpecifications}).populate(['stdin', 'stdout', 'stderr'])
         if (!SpecificationRecord) throw new Error('Failed to get the Specification.');
         return SpecificationRecord;
     },

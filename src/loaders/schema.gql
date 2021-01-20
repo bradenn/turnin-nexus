@@ -121,28 +121,28 @@ type Submission {
 type SubmissionResult {
     _id: ObjectId!
     created: String!
-    exitCode: Float!
-  memoryUsed: Float!
-  resultTest: TestSpecification!
-  testElapsedTime: String!
-  testError: [String!]
-  testOutput: [String!]
-  testPassed: Boolean!
+    exit: Float!
+    memory: Float!
+    test: TestSpecification!
+    testElapsedTime: String!
+    stderr: [String!]
+    stdout: [String!]
+    passed: Boolean!
 }
 
 type TestSpecification {
     _id: ObjectId!
     created: String!
-    testArguments: [String!]!
+    args: [String!]!
     testContext: [String!]!
-    testError: File
-    testExitCode: Float!
-    testInput: File
-    testIsHidden: Boolean
-    testMemoryLeaks: Boolean
-    testName: String!
-    testOutput: File
-    testTimeout: Float!
+    stderr: File
+    exit: Float!
+    stdin: File
+    hidden: Boolean
+    leaks: Boolean
+    name: String!
+    stdout: File
+    timeout: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""

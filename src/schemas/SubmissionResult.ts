@@ -11,19 +11,19 @@ export class SubmissionResult {
 
     @GraphQL(type => TestSpecification)
     @Mongoose({required: true, ref: "TestSpecification"})
-    resultTest!: TestSpecification
+    test!: TestSpecification
 
     @GraphQL({nullable: false})
     @Mongoose({default: false})
-    testPassed: boolean;
+    passed: boolean;
 
     @GraphQL()
     @Mongoose({default: 0})
-    memoryUsed: number
+    memory: number
 
     @GraphQL()
     @Mongoose({default: 0})
-    exitCode: number
+    exit: number
 
     @GraphQL(type => String)
     @Mongoose({default: "0ms"})
@@ -31,11 +31,11 @@ export class SubmissionResult {
 
     @GraphQL(type => [String], {nullable: true})
     @Mongoose({type: [String]})
-    testOutput: string[];
+    stdout: string[];
 
     @GraphQL(type => [String], {nullable: true})
     @Mongoose({type: [String]})
-    testError: string[];
+    stderr: string[];
 
     @GraphQL()
     @Mongoose({default: Date.now})

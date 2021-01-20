@@ -15,31 +15,31 @@ export class TestSpecificationResolver {
     }
 
     /*@FieldResolver(returns => File)
-    async testInput(@Root() TestSpecification: TestSpecification): Promise<File> {
-        return await FileService.getFile(TestSpecification.testInput._id);
+    async stdin(@Root() TestSpecification: TestSpecification): Promise<File> {
+        return await FileService.getFile(TestSpecification.stdin._id);
     }
 
     @FieldResolver(returns => File)
-    async testOutput(@Root() TestSpecification: TestSpecification): Promise<File> {
-        return await FileService.getFile(TestSpecification.testOutput._id);
+    async stdout(@Root() TestSpecification: TestSpecification): Promise<File> {
+        return await FileService.getFile(TestSpecification.stdout._id);
     }
 
     @FieldResolver(returns => File)
-    async testError(@Root() TestSpecification: TestSpecification): Promise<File> {
-        return await FileService.getFile(TestSpecification.testError._id);
+    async stderr(@Root() TestSpecification: TestSpecification): Promise<File> {
+        return await FileService.getFile(TestSpecification.stderr._id);
     }*/
 
     @FieldResolver(returns => [String])
     testContext(@Root() testSpecification: TestSpecification): String[] {
         let res = [];
-        if (testSpecification.testInput) res.push("in");
-        if (testSpecification.testArguments.length > 0) res.push("args");
-        if (testSpecification.testOutput) res.push("out");
-        if (testSpecification.testError) res.push("err");
-        if (testSpecification.testExitCode) res.push("exit");
-        if (testSpecification.testMemoryLeaks) res.push("leaks");
-        if (testSpecification.testTimeout) res.push("timeout");
-        if (testSpecification.testIsHidden) res.push("hidden");
+        if (testSpecification.stdin) res.push("in");
+        if (testSpecification.args.length > 0) res.push("args");
+        if (testSpecification.stdout) res.push("out");
+        if (testSpecification.stderr) res.push("err");
+        if (testSpecification.exit) res.push("exit");
+        if (testSpecification.leaks) res.push("leaks");
+        if (testSpecification.timeout) res.push("timeout");
+        if (testSpecification.hidden) res.push("hidden");
         return res;
     }
 

@@ -32,13 +32,13 @@ export default {
         const rawFiles = await Promise.all(submissionUpload.map(file => Promise.resolve(file)))
 
         const files = await Promise.all(rawFiles.map(file => {
-            const {name, createReadStream} = file;
-            return FileService.tradeFile(name, createReadStream(), userId).then(file => file)
+            const {filename, createReadStream} = file;
+            return FileService.tradeFile(filename, createReadStream(), userId).then(file => file)
         }));
 
         const tests = await TestSpecificationModel
             .find({_id: specification.tests})
-            .populate(['testInput', 'testOutput', 'testError']).exec();
+            .populate(['stdin', 'stdout', 'stderr']).exec();
 
         let payload = {
             submissionFiles: files.concat(specification.providedFiles).map(file => ({
@@ -57,13 +57,13 @@ export default {
 
             return Promise.all(testResults.map(result => {
                 return SubmissionResultModel.create({
-                    resultTest: result._id,
-                    memoryUsed: result.bytesUsed,
-                    exitCode: result.testExitCode,
+                    test: result._id,
+                    memory: result.bytesUsed,
+                    exit: result.exit,
                     testElapsedTime: result.testElapsedTime,
-                    testOutput: result.testOutputDiff,
-                    testError: result.testErrorDiff,
-                    testPassed: result.testPassed
+                    stdout: result.testOutputDiff,
+                    stderr: result.testErrorDiff,
+                    passed: result.passed
                 }).then(doc => doc._id)
             })).then(results => {
                 return SubmissionModel.create({

@@ -4,11 +4,11 @@ import {Readable} from 'stream';
 import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
 
 interface ITestSpecification {
-    testName: string;
-    testExitCode: Number;
-    testInput?: ObjectId,
-    testOutput?: ObjectId,
-    testError?: ObjectId,
+    name: string;
+    exit: Number;
+    stdin?: ObjectId,
+    stdout?: ObjectId,
+    stderr?: ObjectId,
 }
 
 export default {
@@ -17,20 +17,20 @@ export default {
             // One Test Per Loop
             Promise.all(namedFileBuffers.map(testRecord => {
                     let testSpecification: ITestSpecification = {
-                        testExitCode: 0,
-                        testName: testRecord.name
+                        exit: 0,
+                        name: testRecord.name
                     }
                     return Promise.all(testRecord.namedFileBuffers.map(file => {
                         let readable = new Readable();
                         readable.push(file.fileBuffer);
                         readable.push(null)
                         let ext = file.name.split('.')[1]
-                        if (ext === 'exit') testSpecification['testExitCode'] = parseInt(String(file.fileBuffer));
+                        if (ext === 'exit') testSpecification['exit'] = parseInt(String(file.fileBuffer));
                         else if (ext === 'in' || ext === 'out' || ext === 'err') {
                             return FileService.createFile(file.name, readable, userId).then(document => {
-                                if (ext === 'in') testSpecification.testInput = document;
-                                else if (ext === 'out') testSpecification.testOutput = document;
-                                else if (ext === 'err') testSpecification.testError = document;
+                                if (ext === 'in') testSpecification.stdin = document;
+                                else if (ext === 'out') testSpecification.stdout = document;
+                                else if (ext === 'err') testSpecification.stderr = document;
                             });
                         }
                     }))
