@@ -24,10 +24,10 @@ input AssignmentInput {
 }
 
 type Brief {
-  _id: ObjectId!
-  briefDesc: String!
-  briefMarkdownFile: File!
-    briefTitle: String!
+    _id: ObjectId!
+    description: String!
+    markdown: File!
+    title: String!
     created: String!
 }
 

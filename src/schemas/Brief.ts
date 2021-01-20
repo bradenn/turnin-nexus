@@ -11,15 +11,15 @@ export class Brief {
 
     @GraphQL()
     @Mongoose({required: true})
-    briefTitle!: string;
+    title!: string;
 
     @GraphQL()
     @Mongoose()
-    briefDesc: string;
+    description: string;
 
     @GraphQL(type => File)
     @Mongoose({required: true, ref: "File"})
-    briefMarkdownFile!: File;
+    markdown!: File;
 
     @GraphQL()
     @Mongoose({default: Date.now})
