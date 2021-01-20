@@ -4,11 +4,11 @@ import {Field as GraphQL, InputType} from "type-graphql";
 @InputType()
 export class CourseInput {
     @GraphQL()
-    courseName: string;
+    name: string;
 
     @GraphQL()
-    courseSection: number;
+    section: number;
 
     @GraphQL()
-    courseDescription: string;
+    description: string;
 }

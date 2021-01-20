@@ -32,23 +32,23 @@ type Brief {
 }
 
 type Course {
-  _id: ObjectId!
-  courseAssignmentCount: Float!
-  courseAssignments: [Assignment!]!
-  courseDescription: String!
-  courseFullName: String!
-  courseInstructor: User!
-  courseIsLocked: Boolean!
-  courseName: String!
-  courseSection: Float!
+    _id: ObjectId!
+    courseAssignmentCount: Float!
+    courseAssignments: [Assignment!]!
+    description: String!
+    courseFullName: String!
+    instructor: User!
+    locked: Boolean!
+    name: String!
+    section: Float!
     courseStudentCount: Float!
     created: String!
 }
 
 input CourseInput {
-  courseDescription: String!
-  courseName: String!
-  courseSection: Float!
+    description: String!
+    name: String!
+    section: Float!
 }
 
 type File {

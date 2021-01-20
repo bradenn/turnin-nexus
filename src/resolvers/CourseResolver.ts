@@ -1,12 +1,10 @@
-import {Arg, Ctx, FieldResolver, Query, Resolver, Mutation, Root} from "type-graphql";
+import {Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root} from "type-graphql";
 import courseService from "../services/CourseService";
 import {Course} from "../schemas/Course";
 import {Context} from "../schemas/Interfaces";
 import {ObjectIdScalar} from "../schemas/ScalarObjectId";
 import {ObjectId} from "mongodb";
 import {Assignment} from "../schemas/Assignment";
-import {User} from "../schemas/User";
-import userService from "../services/UserService";
 import {CourseInput} from "./inputs/CourseInput";
 
 @Resolver(of => Course)
@@ -35,7 +33,7 @@ export class CourseResolver {
 
     @FieldResolver(returns => String)
     courseFullName(@Root() course: Course): String {
-        return `${course.courseName}.${course.courseSection}`;
+        return `${course.name}.${course.section}`;
     }
 
     @Query(returns => [Course])

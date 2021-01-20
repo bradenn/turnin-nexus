@@ -7,7 +7,7 @@ import {UserModel} from "../schemas/User";
 export default {
 
     async createCourse(courseBody, userId): Promise<Course> {
-        courseBody['courseInstructor'] = userId;
+        courseBody['instructor'] = userId;
         const courseRecord = await CourseModel.create(courseBody);
         if (!courseRecord) throw new Error('Failed to create record');
         return courseRecord;
@@ -18,12 +18,12 @@ export default {
         return courseRecord;
     },
     async getInstructorCourses(userId): Promise<Course[]> {
-        const courseRecord = await CourseModel.find({courseInstructor: userId});
+        const courseRecord = await CourseModel.find({instructor: userId});
         if (!courseRecord) throw new Error('Failed to find records');
         return courseRecord;
     },
     async getInstructorCourse(courseId, userId): Promise<Course> {
-        const courseRecord = await CourseModel.findOne({courseInstructor: userId, _id: courseId});
+        const courseRecord = await CourseModel.findOne({instructor: userId, _id: courseId});
         if (!courseRecord) throw new Error('This course does not belong to the authenticated user or does not exist.');
         return courseRecord;
     },

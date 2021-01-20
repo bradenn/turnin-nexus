@@ -11,23 +11,23 @@ export class Course {
 
     @GraphQL()
     @Mongoose({required: true})
-    courseName!: string;
+    name!: string;
 
     @GraphQL()
     @Mongoose({required: true})
-    courseSection!: number;
+    section!: number;
 
     @GraphQL()
     @Mongoose()
-    courseDescription!: string;
+    description!: string;
 
     @GraphQL(type => User)
     @Mongoose({required: true, ref: "User"})
-    courseInstructor!: User
+    instructor!: User
 
     @GraphQL()
     @Mongoose({default: false})
-    courseIsLocked!: boolean
+    locked!: boolean
 
     @GraphQL()
     @Mongoose({default: Date.now})
