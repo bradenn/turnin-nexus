@@ -47,7 +47,7 @@ export class TestSpecification {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const TestSpecificationModel = getModelForClass(TestSpecification);

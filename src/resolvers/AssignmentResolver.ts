@@ -35,18 +35,18 @@ export class AssignmentResolver {
     /* Field Resolvers */
 
     @FieldResolver(returns => Course)
-    async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {
-        return await courseService.getCourse(assignment.assignmentCourse)
+    async course(@Root() assignment: Assignment): Promise<Course> {
+        return await courseService.getCourse(assignment.course)
     }
 
     @FieldResolver(returns => Course)
-    async assignmentBrief(@Root() assignment: Assignment): Promise<Course> {
-        return await courseService.getCourse(assignment.assignmentCourse)
+    async brief(@Root() assignment: Assignment): Promise<Course> {
+        return await courseService.getCourse(assignment.course)
     }
 
     @FieldResolver(returns => Specification)
-    async assignmentSpecification(@Root() assignment: Assignment): Promise<Specification> {
-        return await SpecificationService.getSpecification(assignment.assignmentSpecification._id)
+    async specification(@Root() assignment: Assignment): Promise<Specification> {
+        return await SpecificationService.getSpecification(assignment.specification._id)
     }
 
     @FieldResolver(returns => [Submission])

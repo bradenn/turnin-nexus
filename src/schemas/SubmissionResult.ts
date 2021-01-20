@@ -39,7 +39,7 @@ export class SubmissionResult {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const SubmissionResultModel = getModelForClass(SubmissionResult);

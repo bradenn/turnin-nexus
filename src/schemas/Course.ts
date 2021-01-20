@@ -31,7 +31,7 @@ export class Course {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const CourseModel = getModelForClass(Course);

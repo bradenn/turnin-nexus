@@ -1,7 +1,5 @@
-import {CourseModel} from "../schemas/Course";
-import {Course} from "../schemas/Course";
+import {Course, CourseModel} from "../schemas/Course";
 import {ObjectId} from "mongodb";
-import assignmentService from "./AssignmentService";
 import {AssignmentModel} from "../schemas/Assignment";
 import {UserModel} from "../schemas/User";
 
@@ -35,12 +33,12 @@ export default {
         return courseRecord;
     },
     async getAssignments(courseId: ObjectId) {
-        const assignmentRecords = await AssignmentModel.find({assignmentCourse: courseId})
+        const assignmentRecords = await AssignmentModel.find({course: courseId})
         if (!assignmentRecords) throw new Error('Failed to remove record');
         return assignmentRecords;
     },
     async getAssignmentCount(courseId: ObjectId): Promise<Number> {
-        const assignmentCount = await AssignmentModel.countDocuments({assignmentCourse: courseId});
+        const assignmentCount = await AssignmentModel.countDocuments({course: courseId});
         if (!assignmentCount && assignmentCount !== 0) throw new Error('Failed to count assignments');
         return assignmentCount;
     },

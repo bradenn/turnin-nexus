@@ -32,7 +32,7 @@ export class Specification {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const SpecificationModel = getModelForClass(Specification);

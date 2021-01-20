@@ -26,7 +26,7 @@ export default {
             .findById(assignmentId).exec();
 
         const specification = await SpecificationModel
-            .findById(assignment.assignmentSpecification)
+            .findById(assignment.specification)
             .populate('specificationProvidedFiles').exec();
 
         const rawFiles = await Promise.all(submissionUpload.map(file => Promise.resolve(file)))

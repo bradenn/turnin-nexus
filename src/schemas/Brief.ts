@@ -23,7 +23,7 @@ export class Brief {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const BriefModel = getModelForClass(Brief);

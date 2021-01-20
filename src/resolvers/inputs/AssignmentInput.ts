@@ -4,14 +4,14 @@ import {Field as GraphQL, InputType} from "type-graphql";
 @InputType()
 export class AssignmentInput {
     @GraphQL()
-    assignmentName: string;
+    name: string;
 
     @GraphQL()
-    assignmentCourse: string;
+    course: string;
 
     @GraphQL()
-    assignmentDueDate: string;
+    due: string;
 
     @GraphQL()
-    assignmentLateDate: string;
+    late: string;
 }

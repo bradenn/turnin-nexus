@@ -76,8 +76,8 @@ export class SpecificationResolver {
     }
 
     @FieldResolver(returns => Course)
-    async assignmentCourse(@Root() assignment: Assignment): Promise<Course> {
-        return await courseService.getCourse(assignment.assignmentCourse)
+    async course(@Root() assignment: Assignment): Promise<Course> {
+        return await courseService.getCourse(assignment.course)
     }
 
 

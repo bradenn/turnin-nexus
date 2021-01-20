@@ -77,7 +77,7 @@ export default {
         return SpecificationRecord;
     },
     async getCourseAssignments(courseId) {
-        const assignmentRecord = await AssignmentModel.find({assignmentCourse: courseId});
+        const assignmentRecord = await AssignmentModel.find({course: courseId});
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
         return assignmentRecord;
     },

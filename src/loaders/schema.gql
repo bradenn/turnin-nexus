@@ -4,31 +4,31 @@
 # -----------------------------------------------
 
 type Assignment {
-  _id: ObjectId!
-  assignmentBrief: Brief!
-  assignmentCourse: Course!
-  assignmentDueDate: String!
-  assignmentIsAssigned: Boolean!
-  assignmentLateDate: String!
-  assignmentName: String!
-  assignmentSpecification: Specification!
-  assignmentSubmissions: [Submission!]!
-  dateCreated: String
+    _id: ObjectId!
+    brief: Brief!
+    course: Course!
+    due: String!
+    assigned: Boolean!
+    late: String!
+    name: String!
+    specification: Specification!
+    assignmentSubmissions: [Submission!]!
+    created: String
 }
 
 input AssignmentInput {
-  assignmentCourse: String!
-  assignmentDueDate: String!
-  assignmentLateDate: String!
-  assignmentName: String!
+    course: String!
+    due: String!
+    late: String!
+    name: String!
 }
 
 type Brief {
   _id: ObjectId!
   briefDesc: String!
   briefMarkdownFile: File!
-  briefTitle: String!
-  dateCreated: String!
+    briefTitle: String!
+    created: String!
 }
 
 type Course {
@@ -41,8 +41,8 @@ type Course {
   courseIsLocked: Boolean!
   courseName: String!
   courseSection: Float!
-  courseStudentCount: Float!
-  dateCreated: String!
+    courseStudentCount: Float!
+    created: String!
 }
 
 input CourseInput {
@@ -52,9 +52,9 @@ input CourseInput {
 }
 
 type File {
-  _id: ObjectId!
-  dateCreated: String!
-  fileLink: String!
+    _id: ObjectId!
+    created: String!
+    fileLink: String!
   fileName: String!
   fileOwner: User!
   fileReference: String!
@@ -91,14 +91,14 @@ type Query {
 }
 
 type Specification {
-  _id: ObjectId!
-  assignmentCourse: Course!
-  dateCreated: String!
-  specificationCompilationCommand: String!
-  specificationCompilationTimeout: Float!
-  specificationProvidedFiles: [File!]!
-  specificationRequiredFiles: [String!]!
-  specificationTests: [TestSpecification!]!
+    _id: ObjectId!
+    course: Course!
+    created: String!
+    specificationCompilationCommand: String!
+    specificationCompilationTimeout: Float!
+    specificationProvidedFiles: [File!]!
+    specificationRequiredFiles: [String!]!
+    specificationTests: [TestSpecification!]!
 }
 
 input SpecificationInput {
@@ -107,9 +107,9 @@ input SpecificationInput {
 }
 
 type Submission {
-  _id: ObjectId!
-  dateCreated: String!
-  submissionAssignment: Assignment!
+    _id: ObjectId!
+    created: String!
+    submissionAssignment: Assignment!
   submissionCompilationOutput: [String!]
   submissionCompilationTime: String!
   submissionFiles: [File!]!
@@ -119,9 +119,9 @@ type Submission {
 }
 
 type SubmissionResult {
-  _id: ObjectId!
-  dateCreated: String!
-  exitCode: Float!
+    _id: ObjectId!
+    created: String!
+    exitCode: Float!
   memoryUsed: Float!
   resultTest: TestSpecification!
   testElapsedTime: String!
@@ -132,7 +132,7 @@ type SubmissionResult {
 
 type TestSpecification {
     _id: ObjectId!
-    dateCreated: String!
+    created: String!
     testArguments: [String!]!
     testContext: [String!]!
     testError: File
@@ -151,9 +151,9 @@ scalar Upload
 type User {
   _id: ObjectId!
   account: String!
-  courses: [Course!]
-  dateCreated: String!
-  email: String!
+    courses: [Course!]
+    created: String!
+    email: String!
   firstname: String!
   fullName: String!
   lastname: String!

@@ -13,35 +13,35 @@ export class Assignment {
 
     @GraphQL()
     @Mongoose({required: true})
-    assignmentName!: string;
+    name!: string;
 
     @GraphQL(type => Course)
     @Mongoose({required: true, ref: "Course"})
-    assignmentCourse!: Course;
+    course!: Course;
 
     @GraphQL()
     @Mongoose({required: true})
-    assignmentDueDate!: string;
+    due!: string;
 
     @GraphQL()
     @Mongoose({required: true})
-    assignmentLateDate!: string;
+    late!: string;
 
     @GraphQL()
     @Mongoose({default: false})
-    assignmentIsAssigned!: boolean;
+    assigned!: boolean;
 
     @GraphQL()
     @Mongoose()
-    assignmentBrief!: Brief;
+    brief!: Brief;
 
     @GraphQL(type => Specification)
     @Mongoose({ref: () => Specification})
-    assignmentSpecification!: Specification;
+    specification!: Specification;
 
     @GraphQL({nullable: true})
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 }
 
 export const AssignmentModel = getModelForClass(Assignment);

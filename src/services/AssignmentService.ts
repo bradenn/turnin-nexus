@@ -8,7 +8,7 @@ import {SubmissionModel} from "../schemas/Submission";
 export default {
     async createAssignment(assignmentBody, userId) {
         assignmentBody['assignmentCreator'] = userId;
-        assignmentBody.assignmentSpecification = await SpecificationService.initSpecification();
+        assignmentBody.specification = await SpecificationService.initSpecification();
         const assignmentRecord = await AssignmentModel.create(assignmentBody);
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
         return assignmentRecord;
@@ -25,12 +25,12 @@ export default {
     },
     async getStudentAssignments(userId) {
         const userRecord = await UserModel.findById(userId).exec()
-        const assignmentRecords = await AssignmentModel.find({assignmentCourse: userRecord.courses.map(d => d._id)}).exec();
+        const assignmentRecords = await AssignmentModel.find({course: userRecord.courses.map(d => d._id)}).exec();
         if (!assignmentRecords) throw new Error('Failed to fetch the assignments.');
         return assignmentRecords;
     },
     async getCourseAssignments(courseId) {
-        const assignmentRecord = await AssignmentModel.find({assignmentCourse: courseId});
+        const assignmentRecord = await AssignmentModel.find({course: courseId});
         if (!assignmentRecord) throw new Error('Failed to create the assignment.');
         return assignmentRecord;
     },

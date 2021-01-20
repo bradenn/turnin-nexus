@@ -59,7 +59,7 @@ export class User {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string
+    created: string
 
 }
 

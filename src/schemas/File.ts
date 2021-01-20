@@ -22,7 +22,7 @@ export class File {
 
     @GraphQL()
     @Mongoose({default: Date.now})
-    dateCreated: string;
+    created: string;
 }
 
 export const FileModel = getModelForClass(File);
