@@ -54,7 +54,7 @@ input CourseInput {
 type File {
     _id: ObjectId!
     created: String!
-    fileLink: String!
+    link: String!
     name: String!
     owner: User!
     reference: String!
@@ -135,6 +135,7 @@ type TestSpecification {
     _id: ObjectId!
     args: [String!]!
     created: String!
+    env: [String!]!
     exit: Float!
     hidden: Boolean
     leaks: Boolean

@@ -15,7 +15,7 @@ export class FileResolver {
     }
 
     @FieldResolver(returns => String)
-    async fileLink(@Root() file: File): Promise<String> {
+    async link(@Root() file: File): Promise<String> {
         return `${process.env.S3_LINK}/${process.env.S3_BUCKET}/${file.reference}`
     }
 

@@ -29,6 +29,10 @@ export class TestSpecification {
     @Mongoose({type: [String], default: []})
     args: string[];
 
+    @GraphQL(type => [String])
+    @Mongoose({type: [String], default: []})
+    env: string[];
+
     @GraphQL(type => Number)
     @Mongoose({default: 0})
     exit: number;
