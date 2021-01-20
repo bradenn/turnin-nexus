@@ -6,7 +6,7 @@ export class FileInput {
     @GraphQL(type => Stream) // <<== the problem
     stream?: Stream;
 
-    @GraphQL() filename: string;
+    @GraphQL() name: string;
 
     @GraphQL() mimetype: string;
 

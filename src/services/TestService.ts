@@ -18,16 +18,16 @@ export default {
             Promise.all(namedFileBuffers.map(testRecord => {
                     let testSpecification: ITestSpecification = {
                         testExitCode: 0,
-                        testName: testRecord.fileName
+                        testName: testRecord.name
                     }
                     return Promise.all(testRecord.namedFileBuffers.map(file => {
                         let readable = new Readable();
                         readable.push(file.fileBuffer);
                         readable.push(null)
-                        let ext = file.fileName.split('.')[1]
+                        let ext = file.name.split('.')[1]
                         if (ext === 'exit') testSpecification['testExitCode'] = parseInt(String(file.fileBuffer));
                         else if (ext === 'in' || ext === 'out' || ext === 'err') {
-                            return FileService.createFile(file.fileName, readable, userId).then(document => {
+                            return FileService.createFile(file.name, readable, userId).then(document => {
                                 if (ext === 'in') testSpecification.testInput = document;
                                 else if (ext === 'out') testSpecification.testOutput = document;
                                 else if (ext === 'err') testSpecification.testError = document;

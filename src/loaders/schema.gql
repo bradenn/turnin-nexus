@@ -55,9 +55,9 @@ type File {
     _id: ObjectId!
     created: String!
     fileLink: String!
-  fileName: String!
-  fileOwner: User!
-  fileReference: String!
+    name: String!
+    owner: User!
+    reference: String!
 }
 
 type Mutation {

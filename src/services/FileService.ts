@@ -6,26 +6,26 @@ import tar from "tar-stream"
 import {createGunzip} from "zlib";
 
 export interface INamedFileBuffer {
-    fileName: string;
+    name: string;
     fileBuffer: Buffer;
 }
 
 export interface IGroupedAndNamedFileBuffer {
-    fileName: string;
+    name: string;
     namedFileBuffers: INamedFileBuffer[];
 }
 
 function groupNamedFileBuffers(fileBuffers: INamedFileBuffer[]): Promise<IGroupedAndNamedFileBuffer[]> {
     return new Promise((resolve, reject) => {
         const rawGroups = fileBuffers.reduce((reduce, value: INamedFileBuffer) => {
-            const serializedFileName: string = value.fileName.split('.')[0];
+            const serializedFileName: string = value.name.split('.')[0];
             reduce[serializedFileName] = [...reduce[serializedFileName] || [], value]
             return reduce;
         }, {});
         const groupedAndNamedFileBuffers: IGroupedAndNamedFileBuffer[] = Object.keys(rawGroups).map(groupKey => {
             const namedFileBuffers: INamedFileBuffer[] = rawGroups[groupKey];
             const groupedAndNamedFileBuffer: IGroupedAndNamedFileBuffer = {
-                fileName: groupKey,
+                name: groupKey,
                 namedFileBuffers: namedFileBuffers
             };
             return groupedAndNamedFileBuffer;
@@ -48,11 +48,11 @@ export default {
             // Extract method accepts each tarred file as entry, separating header and stream of contents:
             extract.on('entry', (header, stream, next) => {
                 stream.on('data', (chunk) => {
-                    let filename = header.name.substr(header.name.lastIndexOf('/') + 1);
-                    if (!filename.includes('._') &&
-                        (filename.endsWith(".in") || filename.endsWith(".out") || filename.endsWith(".err")
-                            || filename.endsWith(".exit") || filename.endsWith(".cmd") || filename.endsWith(".hide"))) {
-                        textData.push({fileName: filename, fileBuffer: chunk});
+                    let name = header.name.substr(header.name.lastIndexOf('/') + 1);
+                    if (!name.includes('._') &&
+                        (name.endsWith(".in") || name.endsWith(".out") || name.endsWith(".err")
+                            || name.endsWith(".exit") || name.endsWith(".cmd") || name.endsWith(".hide"))) {
+                        textData.push({name: name, fileBuffer: chunk});
                     }
                 });
                 stream.on('error', (err) => {
@@ -73,13 +73,13 @@ export default {
 
         });
     },
-    tradeFile(fileName: string, fileStream: Stream, fileOwner: ObjectId): Promise<File> {
+    tradeFile(name: string, fileStream: Stream, owner: ObjectId): Promise<File> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(fileName, fileStream).then(reference => {
+            s3Client.uploadFile(name, fileStream).then(reference => {
                 FileModel.create({
-                    fileName: fileName,
-                    fileOwner: fileOwner,
-                    fileReference: reference
+                    name: name,
+                    owner: owner,
+                    reference: reference
                 }).then(document => {
                     resolve(document);
                 }).catch(error => {
@@ -88,13 +88,13 @@ export default {
             });
         });
     },
-    createFile(fileName: string, fileStream: Stream, fileOwner: ObjectId): Promise<ObjectId> {
+    createFile(name: string, fileStream: Stream, owner: ObjectId): Promise<ObjectId> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(fileName, fileStream).then(reference => {
+            s3Client.uploadFile(name, fileStream).then(reference => {
                 FileModel.create({
-                    fileName: fileName,
-                    fileOwner: fileOwner,
-                    fileReference: reference
+                    name: name,
+                    owner: owner,
+                    reference: reference
                 }).then(document => {
                     resolve(document._id);
                 }).catch(error => {
@@ -106,7 +106,7 @@ export default {
     deleteFile(fileId: ObjectId): Promise<File> {
         return new Promise((resolve, reject) => {
             FileModel.findById(fileId).then(document => {
-                s3Client.deleteFile(document.fileReference).then(() => {
+                s3Client.deleteFile(document.reference).then(() => {
                     FileModel.deleteOne({_id: fileId})
                         .then(() => resolve(document))
                         .catch((err) => reject(err))

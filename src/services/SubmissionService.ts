@@ -32,8 +32,8 @@ export default {
         const rawFiles = await Promise.all(submissionUpload.map(file => Promise.resolve(file)))
 
         const files = await Promise.all(rawFiles.map(file => {
-            const {filename, createReadStream} = file;
-            return FileService.tradeFile(filename, createReadStream(), userId).then(file => file)
+            const {name, createReadStream} = file;
+            return FileService.tradeFile(name, createReadStream(), userId).then(file => file)
         }));
 
         const tests = await TestSpecificationModel
@@ -42,8 +42,8 @@ export default {
 
         let payload = {
             submissionFiles: files.concat(specification.specificationProvidedFiles).map(file => ({
-                fileName: file.fileName,
-                fileReference: file.fileReference
+                name: file.name,
+                reference: file.reference
             })),
             submissionTests: tests,
             compilationOptions: {

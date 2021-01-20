@@ -26,19 +26,19 @@ export default {
         if (!SpecificationRecord) throw new Error('Failed to update Specification');
         return SpecificationRecord;
     },
-    async addRequiredFile(SpecificationId: ObjectId, fileName: string) {
-        const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$addToSet: {specificationRequiredFiles: [fileName]}});
+    async addRequiredFile(SpecificationId: ObjectId, name: string) {
+        const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$addToSet: {specificationRequiredFiles: [name]}});
         if (!SpecificationRecord) throw new Error('Failed to update Specification');
         return SpecificationRecord;
     },
-    async removeRequiredFile(SpecificationId: ObjectId, fileName: string) {
-        const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$pullAll: {specificationRequiredFiles: [fileName]}});
+    async removeRequiredFile(SpecificationId: ObjectId, name: string) {
+        const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$pullAll: {specificationRequiredFiles: [name]}});
         if (!SpecificationRecord) throw new Error('Failed to update Specification');
         return SpecificationRecord;
     },
     async addProvidedFile(SpecificationId: ObjectId, fileUpload: FileUpload, userId: ObjectId) {
-        const {createReadStream, filename} = fileUpload;
-        const file = await FileService.createFile(filename, createReadStream(), userId);
+        const {createReadStream, name} = fileUpload;
+        const file = await FileService.createFile(name, createReadStream(), userId);
         const SpecificationRecord = await SpecificationModel.findByIdAndUpdate(SpecificationId, {$addToSet: {specificationProvidedFiles: [file]}});
         if (!SpecificationRecord) throw new Error('Failed to update Specification');
         return SpecificationRecord;

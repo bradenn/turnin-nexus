@@ -9,7 +9,7 @@ import {ReadStream} from "fs-capacitor";
 
 function generateUploadFile(): FileUpload {
     return {
-        filename: "File Name",
+        name: "File Name",
         mimetype: "",
         encoding: "",
         createReadStream(): ReadStream {

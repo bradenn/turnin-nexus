@@ -16,7 +16,7 @@ function getClient() {
 }
 
 export default {
-    uploadFile(fileName, fileStream) {
+    uploadFile(name, fileStream) {
         return new Promise((resolve, reject) => {
             const s3Client = getClient();
             const params = {

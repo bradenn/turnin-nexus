@@ -10,15 +10,15 @@ export class File {
 
     @GraphQL()
     @Mongoose({required: true})
-    fileName!: string;
+    name!: string;
 
     @GraphQL()
     @Mongoose()
-    fileReference: string;
+    reference: string;
 
     @GraphQL(type => User)
     @Mongoose({required: true, ref: "User"})
-    fileOwner!: User;
+    owner!: User;
 
     @GraphQL()
     @Mongoose({default: Date.now})
