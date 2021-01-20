@@ -12,23 +12,23 @@ export class Specification {
 
     @GraphQL()
     @Mongoose({required: true, default: "make"})
-    specificationCompilationCommand!: string;
+    command!: string;
 
     @GraphQL()
     @Mongoose({default: 5000})
-    specificationCompilationTimeout!: number;
+    timeout!: number;
 
     @GraphQL(type => [String])
     @Mongoose({type: [String], default: []})
-    specificationRequiredFiles!: string[];
+    requiredFiles!: string[];
 
     @GraphQL(type => [File])
     @Mongoose({ref: "File", default: []})
-    specificationProvidedFiles!: File[]
+    providedFiles!: File[]
 
     @GraphQL(type => [TestSpecification])
     @Mongoose({ref: "TestSpecification", default: []})
-    specificationTests: TestSpecification[];
+    tests: TestSpecification[];
 
     @GraphQL()
     @Mongoose({default: Date.now})

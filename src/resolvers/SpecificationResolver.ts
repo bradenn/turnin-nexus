@@ -44,7 +44,7 @@ export class SpecificationResolver {
 
     /* Provided Files */
     @FieldResolver(returns => [File])
-    async specificationProvidedFiles(@Root() Specification: Specification): Promise<File[]> {
+    async providedFiles(@Root() Specification: Specification): Promise<File[]> {
         return await SpecificationService.getProvidedFiles(Specification)
     }
 
@@ -71,8 +71,8 @@ export class SpecificationResolver {
     }
 
     @FieldResolver(returns => [TestSpecification])
-    async specificationTests(@Root() Specification: Specification): Promise<TestSpecification[]> {
-        return await SpecificationService.getSpecificationTests(Specification.specificationTests)
+    async tests(@Root() Specification: Specification): Promise<TestSpecification[]> {
+        return await SpecificationService.getSpecificationTests(Specification.tests)
     }
 
     @FieldResolver(returns => Course)

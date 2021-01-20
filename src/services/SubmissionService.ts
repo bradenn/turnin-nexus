@@ -27,7 +27,7 @@ export default {
 
         const specification = await SpecificationModel
             .findById(assignment.specification)
-            .populate('specificationProvidedFiles').exec();
+            .populate('providedFiles').exec();
 
         const rawFiles = await Promise.all(submissionUpload.map(file => Promise.resolve(file)))
 
@@ -37,18 +37,18 @@ export default {
         }));
 
         const tests = await TestSpecificationModel
-            .find({_id: specification.specificationTests})
+            .find({_id: specification.tests})
             .populate(['testInput', 'testOutput', 'testError']).exec();
 
         let payload = {
-            submissionFiles: files.concat(specification.specificationProvidedFiles).map(file => ({
+            submissionFiles: files.concat(specification.providedFiles).map(file => ({
                 name: file.name,
                 reference: file.reference
             })),
             submissionTests: tests,
             compilationOptions: {
-                compilationCommand: specification.specificationCompilationCommand,
-                compilationTimeout: specification.specificationCompilationTimeout
+                compilationCommand: specification.command,
+                compilationTimeout: specification.timeout
             }
         }
 

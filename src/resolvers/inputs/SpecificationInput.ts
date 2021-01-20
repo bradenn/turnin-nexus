@@ -5,10 +5,10 @@ import {Field as GraphQL, InputType} from "type-graphql";
 export class SpecificationInput {
 
     @GraphQL()
-    specificationCompilationCommand: string;
+    command: string;
 
     @GraphQL()
-    specificationCompilationTimeout: number;
+    timeout: number;
 
 }
 
@@ -16,12 +16,12 @@ export class SpecificationInput {
 export class SpecificationFileUpload {
 
     @GraphQL()
-    specificationCompilationCommand: string;
+    command: string;
 
     @GraphQL()
-    specificationCompilationTimeout: number;
+    timeout: number;
 
     @GraphQL(type => [String])
-    specificationRequiredFiles!: string[];
+    requiredFiles!: string[];
 }
 
