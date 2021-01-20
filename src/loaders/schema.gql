@@ -5,15 +5,15 @@
 
 type Assignment {
     _id: ObjectId!
+    assigned: Boolean!
+    assignmentSubmissions: [Submission!]!
     brief: Brief!
     course: Course!
+    created: String
     due: String!
-    assigned: Boolean!
     late: String!
     name: String!
     specification: Specification!
-    assignmentSubmissions: [Submission!]!
-    created: String
 }
 
 input AssignmentInput {
@@ -25,24 +25,24 @@ input AssignmentInput {
 
 type Brief {
     _id: ObjectId!
+    created: String!
     description: String!
     markdown: File!
     title: String!
-    created: String!
 }
 
 type Course {
     _id: ObjectId!
     courseAssignmentCount: Float!
     courseAssignments: [Assignment!]!
-    description: String!
     courseFullName: String!
+    courseStudentCount: Float!
+    created: String!
+    description: String!
     instructor: User!
     locked: Boolean!
     name: String!
     section: Float!
-    courseStudentCount: Float!
-    created: String!
 }
 
 input CourseInput {
@@ -92,13 +92,13 @@ type Query {
 
 type Specification {
     _id: ObjectId!
+    command: String!
     course: Course!
     created: String!
-    command: String!
-    timeout: Float!
     providedFiles: [File!]!
     requiredFiles: [String!]!
     tests: [TestSpecification!]!
+    timeout: Float!
 }
 
 input SpecificationInput {
@@ -108,14 +108,15 @@ input SpecificationInput {
 
 type Submission {
     _id: ObjectId!
+    assignment: Assignment!
     created: String!
-    submissionAssignment: Assignment!
-  submissionCompilationOutput: [String!]
-  submissionCompilationTime: String!
-  submissionFiles: [File!]!
-  submissionOwner: User!
-  submissionPassedTest: Boolean!
-  submissionResults: [SubmissionResult!]!
+    duration: String!
+    files: [File!]!
+    owner: User!
+    passed: Boolean!
+    results: [SubmissionResult!]!
+    stdout: [String!]
+    submissionOwner: User!
 }
 
 type SubmissionResult {
@@ -123,25 +124,25 @@ type SubmissionResult {
     created: String!
     exit: Float!
     memory: Float!
-    test: TestSpecification!
-    testElapsedTime: String!
+    passed: Boolean!
     stderr: [String!]
     stdout: [String!]
-    passed: Boolean!
+    test: TestSpecification!
+    testElapsedTime: String!
 }
 
 type TestSpecification {
     _id: ObjectId!
-    created: String!
     args: [String!]!
-    testContext: [String!]!
-    stderr: File
+    created: String!
     exit: Float!
-    stdin: File
     hidden: Boolean
     leaks: Boolean
     name: String!
+    stderr: File
+    stdin: File
     stdout: File
+    testContext: [String!]!
     timeout: Float!
 }
 
@@ -149,14 +150,14 @@ type TestSpecification {
 scalar Upload
 
 type User {
-  _id: ObjectId!
-  account: String!
+    _id: ObjectId!
+    account: String!
     courses: [Course!]
     created: String!
     email: String!
-  firstname: String!
-  fullName: String!
-  lastname: String!
-  password: String!
-  username: String!
+    firstname: String!
+    fullName: String!
+    lastname: String!
+    password: String!
+    username: String!
 }
