@@ -1,5 +1,5 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {File} from "./File";
 import {TestSpecification} from "./TestSpecification";
 import {ObjectId} from "mongodb";
@@ -7,25 +7,31 @@ import {ObjectId} from "mongodb";
 @ObjectType()
 export class Specification {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true, default: "make"})
+    @GraphQL()
+    @Mongoose({required: true, default: "make"})
     specificationCompilationCommand!: string;
 
-    @Field() @Property({default: 5000})
+    @GraphQL()
+    @Mongoose({default: 5000})
     specificationCompilationTimeout!: number;
 
-    @Field(type => [String]) @Property({type: [String], default: []})
+    @GraphQL(type => [String])
+    @Mongoose({type: [String], default: []})
     specificationRequiredFiles!: string[];
 
-    @Field(type => [File]) @Property({ref: "File", default: []})
+    @GraphQL(type => [File])
+    @Mongoose({ref: "File", default: []})
     specificationProvidedFiles!: File[]
 
-    @Field(type => [TestSpecification]) @Property({ref: "TestSpecification", default: []})
+    @GraphQL(type => [TestSpecification])
+    @Mongoose({ref: "TestSpecification", default: []})
     specificationTests: TestSpecification[];
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string
 }
 

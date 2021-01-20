@@ -1,24 +1,27 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
-import mongoose from "mongoose";
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {User} from "./User";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
 export class File {
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     fileName!: string;
 
-    @Field() @Property()
+    @GraphQL()
+    @Mongoose()
     fileReference: string;
 
-    @Field(type => User) @Property({required: true, ref: "User"})
+    @GraphQL(type => User)
+    @Mongoose({required: true, ref: "User"})
     fileOwner!: User;
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string;
 }
 

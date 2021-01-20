@@ -1,16 +1,14 @@
-import {Course} from "../../schemas/Course";
-import {Field, InputType} from "type-graphql";
-
+import {Field as GraphQL, InputType} from "type-graphql";
 
 
 @InputType()
 export class CourseInput {
-    @Field()
+    @GraphQL()
     courseName: string;
 
-    @Field()
+    @GraphQL()
     courseSection: number;
 
-    @Field()
+    @GraphQL()
     courseDescription: string;
 }

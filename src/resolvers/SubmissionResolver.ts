@@ -28,7 +28,7 @@ export class SubmissionResolver {
 
     @FieldResolver()
     async submissionOwner(@Root() submission: Submission): Promise<User> {
-        return await userService.getUser(submission.submissionOwner._id);
+        return await userService.getUser(submission.owner._id);
     }
 
 

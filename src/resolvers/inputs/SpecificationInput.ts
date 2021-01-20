@@ -1,13 +1,13 @@
-import {Field, InputType} from "type-graphql";
+import {Field as GraphQL, InputType} from "type-graphql";
 
 
 @InputType()
 export class SpecificationInput {
 
-    @Field()
+    @GraphQL()
     specificationCompilationCommand: string;
 
-    @Field()
+    @GraphQL()
     specificationCompilationTimeout: number;
 
 }
@@ -15,13 +15,13 @@ export class SpecificationInput {
 @InputType()
 export class SpecificationFileUpload {
 
-    @Field()
+    @GraphQL()
     specificationCompilationCommand: string;
 
-    @Field()
+    @GraphQL()
     specificationCompilationTimeout: number;
 
-    @Field(type => [String])
+    @GraphQL(type => [String])
     specificationRequiredFiles!: string[];
 }
 

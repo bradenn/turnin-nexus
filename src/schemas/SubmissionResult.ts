@@ -1,36 +1,44 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {ObjectId} from "mongodb";
 import {TestSpecification} from "./TestSpecification";
 
 @ObjectType()
 export class SubmissionResult {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field(type => TestSpecification) @Property({required: true, ref: "TestSpecification"})
+    @GraphQL(type => TestSpecification)
+    @Mongoose({required: true, ref: "TestSpecification"})
     resultTest!: TestSpecification
 
-    @Field({nullable: false}) @Property({default: false})
+    @GraphQL({nullable: false})
+    @Mongoose({default: false})
     testPassed: boolean;
 
-    @Field() @Property({default: 0})
+    @GraphQL()
+    @Mongoose({default: 0})
     memoryUsed: number
 
-    @Field() @Property({default: 0})
+    @GraphQL()
+    @Mongoose({default: 0})
     exitCode: number
 
-    @Field(type => String) @Property({default: "0ms"})
+    @GraphQL(type => String)
+    @Mongoose({default: "0ms"})
     testElapsedTime: string
 
-    @Field(type => [String], {nullable: true}) @Property({type: [String]})
+    @GraphQL(type => [String], {nullable: true})
+    @Mongoose({type: [String]})
     testOutput: string[];
 
-    @Field(type => [String], {nullable: true}) @Property({type: [String]})
+    @GraphQL(type => [String], {nullable: true})
+    @Mongoose({type: [String]})
     testError: string[];
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string
 }
 

@@ -1,5 +1,5 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, pre, prop as Property, Ref} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, pre, prop as Mongoose, Ref} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import bcrypt from "bcrypt";
 import {ObjectId} from "mongodb";
@@ -26,31 +26,39 @@ function hashPassword(password: string): Promise<string> {
 
 export class User {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     username!: string;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     email!: string;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     firstname!: string
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     lastname!: string
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     password!: string
 
-    @Field() @Property({required: true, default: 'student'})
+    @GraphQL()
+    @Mongoose({required: true, default: 'student'})
     account!: string
 
-    @Field(type => [Course], {nullable: true}) @Property({ref: "Course", default: []})
+    @GraphQL(type => [Course], {nullable: true})
+    @Mongoose({ref: "Course", default: []})
     courses!: Ref<Course>[]
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string
 
 }

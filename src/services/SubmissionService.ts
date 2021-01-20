@@ -67,12 +67,12 @@ export default {
                 }).then(doc => doc._id)
             })).then(results => {
                 return SubmissionModel.create({
-                    submissionAssignment: assignmentId,
-                    submissionOwner: userId,
-                    submissionFiles: files.map(obj => obj._id),
-                    submissionResults: results,
-                    submissionCompilationOutput: data.data.compilationResults.compilationOutput,
-                    submissionCompilationTime: data.data.compilationResults.compilationTime
+                    assignment: assignmentId,
+                    owner: userId,
+                    files: files.map(obj => obj._id),
+                    results: results,
+                    stdout: data.data.compilationResults.compilationOutput,
+                    duration: data.data.compilationResults.compilationTime
                 }).then(doc => {
                     return doc
                 })

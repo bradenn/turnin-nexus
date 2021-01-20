@@ -1,14 +1,14 @@
-import {Field, InputType} from "type-graphql";
+import {Field as GraphQL} from "type-graphql";
 import * as Stream from "stream";
 
 
 export class FileInput {
-    @Field(type => Stream) // <<== the problem
+    @GraphQL(type => Stream) // <<== the problem
     stream?: Stream;
 
-    @Field() filename: string;
+    @GraphQL() filename: string;
 
-    @Field() mimetype: string;
+    @GraphQL() mimetype: string;
 
-    @Field() encoding: string;
+    @GraphQL() encoding: string;
 }

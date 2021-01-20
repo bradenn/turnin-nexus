@@ -76,18 +76,18 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  assignment(assignmentId: ObjectId!): Assignment!
-  course(courseId: ObjectId!): Course!
-  file(fileId: ObjectId!): File!
-  instructorCourse(courseId: ObjectId!): Course!
-  instructorCourses: [Course!]!
-  self: User!
-  Specification(SpecificationId: ObjectId!): Specification!
-  studentAssignments: [Assignment!]!
-  submission(submissionId: ObjectId!): Submission!
+    assignment(assignmentId: ObjectId!): Assignment!
+    course(courseId: ObjectId!): Course!
+    file(fileId: ObjectId!): File!
+    instructorCourse(courseId: ObjectId!): Course!
+    instructorCourses: [Course!]!
+    self: User!
+    Specification(SpecificationId: ObjectId!): Specification!
+    studentAssignments: [Assignment!]!
+    submission(submissionId: ObjectId!): Submission!
     TestSpecification(TestSpecificationId: ObjectId!): TestSpecification!
     user(targetId: ObjectId!): User!
-  userSelf: User!
+    userSelf: User!
 }
 
 type Specification {
@@ -131,18 +131,18 @@ type SubmissionResult {
 }
 
 type TestSpecification {
-  _id: ObjectId!
-  dateCreated: String!
+    _id: ObjectId!
+    dateCreated: String!
     testArguments: [String!]!
     testContext: [String!]!
     testError: File
-  testExitCode: Float!
-  testInput: File
-  testIsHidden: Boolean
-  testMemoryLeaks: Boolean
-  testName: String!
-  testOutput: File
-  testTimeout: Float!
+    testExitCode: Float!
+    testInput: File
+    testIsHidden: Boolean
+    testMemoryLeaks: Boolean
+    testName: String!
+    testOutput: File
+    testTimeout: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""

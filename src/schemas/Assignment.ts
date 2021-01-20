@@ -1,5 +1,5 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {Course} from "./Course";
 import {Brief} from "./Brief";
 import {Specification} from "./Specification";
@@ -8,31 +8,39 @@ import {ObjectId} from "mongodb";
 @ObjectType()
 export class Assignment {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     assignmentName!: string;
 
-    @Field(type => Course) @Property({required: true, ref: "Course"})
+    @GraphQL(type => Course)
+    @Mongoose({required: true, ref: "Course"})
     assignmentCourse!: Course;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     assignmentDueDate!: string;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     assignmentLateDate!: string;
 
-    @Field() @Property({default: false})
+    @GraphQL()
+    @Mongoose({default: false})
     assignmentIsAssigned!: boolean;
 
-    @Field() @Property()
+    @GraphQL()
+    @Mongoose()
     assignmentBrief!: Brief;
 
-    @Field(type => Specification) @Property({ref: () => Specification})
+    @GraphQL(type => Specification)
+    @Mongoose({ref: () => Specification})
     assignmentSpecification!: Specification;
 
-    @Field({nullable: true}) @Property({default: Date.now})
+    @GraphQL({nullable: true})
+    @Mongoose({default: Date.now})
     dateCreated: string
 }
 

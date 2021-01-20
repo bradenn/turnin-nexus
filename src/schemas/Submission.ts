@@ -1,6 +1,6 @@
-import {Field, ObjectType} from "type-graphql"
+import {Field as GraphQL, ObjectType} from "type-graphql"
 import {getModelForClass, Ref} from "@typegoose/typegoose"
-import {prop as Property} from "@typegoose/typegoose/lib/prop";
+import {prop as Mongoose} from "@typegoose/typegoose/lib/prop";
 import {File} from "./File";
 import {Assignment} from "./Assignment";
 import {User} from "./User";
@@ -10,32 +10,40 @@ import {ObjectId} from "mongodb";
 @ObjectType()
 export class Submission {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field(type => Assignment) @Property({required: true, ref: () => Assignment})
-    submissionAssignment!: Assignment;
+    @GraphQL(type => Assignment)
+    @Mongoose({required: true, ref: () => Assignment})
+    assignment!: Assignment;
 
-    @Field(type => User) @Property({required: true, ref: () => User})
-    submissionOwner!: User;
+    @GraphQL(type => User)
+    @Mongoose({required: true, ref: () => User})
+    owner!: User;
 
-    @Field(type => [File]) @Property({ref: "File", default: []})
-    submissionFiles!: Ref<File>[]
+    @GraphQL(type => [File])
+    @Mongoose({ref: "File", default: []})
+    files!: Ref<File>[]
 
-    @Field(type => [SubmissionResult]) @Property({ref: "SubmissionResult", default: []})
-    submissionResults: Ref<SubmissionResult>[];
+    @GraphQL(type => [SubmissionResult])
+    @Mongoose({ref: "SubmissionResult", default: []})
+    results: Ref<SubmissionResult>[];
 
-    @Field(type => Boolean) @Property({default: false, type: Boolean})
-    submissionPassedTest: boolean
+    @GraphQL(type => Boolean)
+    @Mongoose({default: false, type: Boolean})
+    passed: boolean
 
-    @Field(type => [String], {nullable: true}) @Property({type: [String]})
-    submissionCompilationOutput: string[];
+    @GraphQL(type => [String], {nullable: true})
+    @Mongoose({type: [String]})
+    stdout: string[];
 
-    @Field() @Property({default: ""})
-    submissionCompilationTime: string
+    @GraphQL()
+    @Mongoose({default: ""})
+    duration: string
 
-    @Field() @Property({default: Date.now})
-    dateCreated: string
+    @GraphQL()
+    @Mongoose({default: Date.now})
+    created: string
 }
 
 export const SubmissionModel = getModelForClass(Submission);

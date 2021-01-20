@@ -1,30 +1,36 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {User} from "./User";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
 export class Course {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     courseName!: string;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     courseSection!: number;
 
-    @Field() @Property()
+    @GraphQL()
+    @Mongoose()
     courseDescription!: string;
 
-    @Field(type => User) @Property({required: true, ref: "User"})
+    @GraphQL(type => User)
+    @Mongoose({required: true, ref: "User"})
     courseInstructor!: User
 
-    @Field() @Property({default: false})
+    @GraphQL()
+    @Mongoose({default: false})
     courseIsLocked!: boolean
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string
 }
 

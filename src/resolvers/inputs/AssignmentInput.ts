@@ -1,17 +1,17 @@
-import {Field, InputType} from "type-graphql";
+import {Field as GraphQL, InputType} from "type-graphql";
 
 
 @InputType()
 export class AssignmentInput {
-    @Field()
+    @GraphQL()
     assignmentName: string;
 
-    @Field()
+    @GraphQL()
     assignmentCourse: string;
 
-    @Field()
+    @GraphQL()
     assignmentDueDate: string;
 
-    @Field()
+    @GraphQL()
     assignmentLateDate: string;
 }

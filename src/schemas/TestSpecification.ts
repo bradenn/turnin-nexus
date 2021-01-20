@@ -1,42 +1,52 @@
-import {Field, ObjectType} from "type-graphql"
-import {getModelForClass, prop as Property} from "@typegoose/typegoose"
+import {Field as GraphQL, ObjectType} from "type-graphql"
+import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {File} from "./File"
 import {ObjectId} from "mongodb";
 
 @ObjectType()
 export class TestSpecification {
 
-    @Field()
+    @GraphQL()
     readonly _id: ObjectId;
 
-    @Field() @Property({required: true})
+    @GraphQL()
+    @Mongoose({required: true})
     testName!: string;
 
-    @Field() @Property({default: 50})
+    @GraphQL()
+    @Mongoose({default: 50})
     testTimeout: number;
 
-    @Field({nullable: true}) @Property({default: false})
+    @GraphQL({nullable: true})
+    @Mongoose({default: false})
     testMemoryLeaks: boolean;
 
-    @Field({nullable: true}) @Property({default: false})
+    @GraphQL({nullable: true})
+    @Mongoose({default: false})
     testIsHidden: boolean;
 
-    @Field(type => [String]) @Property({type: [String], default: []})
+    @GraphQL(type => [String])
+    @Mongoose({type: [String], default: []})
     testArguments: string[];
 
-    @Field(type => Number) @Property({default: 0})
+    @GraphQL(type => Number)
+    @Mongoose({default: 0})
     testExitCode: number;
 
-    @Field(type => File, {nullable: true}) @Property({ref: "File"})
+    @GraphQL(type => File, {nullable: true})
+    @Mongoose({ref: "File"})
     testInput: File;
 
-    @Field(type => File, {nullable: true}) @Property({ref: "File"})
+    @GraphQL(type => File, {nullable: true})
+    @Mongoose({ref: "File"})
     testOutput: File;
 
-    @Field(type => File, {nullable: true}) @Property({ref: "File"})
+    @GraphQL(type => File, {nullable: true})
+    @Mongoose({ref: "File"})
     testError: File;
 
-    @Field() @Property({default: Date.now})
+    @GraphQL()
+    @Mongoose({default: Date.now})
     dateCreated: string
 }
 
