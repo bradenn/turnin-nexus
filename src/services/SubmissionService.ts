@@ -41,14 +41,16 @@ export default {
             .populate(['stdin', 'stdout', 'stderr']).exec();
 
         let payload = {
-            submissionFiles: files.concat(specification.providedFiles).map(file => ({
+            files: files.concat(specification.providedFiles).map(file => ({
+                _id: file._id,
                 name: file.name,
-                reference: file.reference
+                reference: file.reference,
+                link: `${process.env.S3_LINK}/${process.env.S3_BUCKET}/${file.reference}`
             })),
-            submissionTests: tests,
-            compilationOptions: {
-                compilationCommand: specification.command,
-                compilationTimeout: specification.timeout
+            tests: tests,
+            configuration: {
+                cmd: specification.command,
+                timeout: specification.timeout
             }
         }
 

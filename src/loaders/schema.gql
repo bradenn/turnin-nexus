@@ -4,60 +4,60 @@
 # -----------------------------------------------
 
 type Assignment {
-    _id: ObjectId!
-    assigned: Boolean!
-    assignmentSubmissions: [Submission!]!
-    brief: Brief!
-    course: Course!
-    created: String
-    due: String!
-    late: String!
-    name: String!
-    specification: Specification!
+  _id: ObjectId!
+  assigned: Boolean!
+  assignmentSubmissions: [Submission!]!
+  brief: Brief!
+  course: Course!
+  created: String
+  due: String!
+  late: String!
+  name: String!
+  specification: Specification!
 }
 
 input AssignmentInput {
-    course: String!
-    due: String!
-    late: String!
-    name: String!
+  course: String!
+  due: String!
+  late: String!
+  name: String!
 }
 
 type Brief {
-    _id: ObjectId!
-    created: String!
-    description: String!
-    markdown: File!
-    title: String!
+  _id: ObjectId!
+  created: String!
+  description: String!
+  markdown: File!
+  title: String!
 }
 
 type Course {
-    _id: ObjectId!
-    courseAssignmentCount: Float!
-    courseAssignments: [Assignment!]!
-    courseFullName: String!
-    courseStudentCount: Float!
-    created: String!
-    description: String!
-    instructor: User!
-    locked: Boolean!
-    name: String!
-    section: Float!
+  _id: ObjectId!
+  courseAssignmentCount: Float!
+  courseAssignments: [Assignment!]!
+  courseFullName: String!
+  courseStudentCount: Float!
+  created: String!
+  description: String!
+  instructor: User!
+  locked: Boolean!
+  name: String!
+  section: Float!
 }
 
 input CourseInput {
-    description: String!
-    name: String!
-    section: Float!
+  description: String!
+  name: String!
+  section: Float!
 }
 
 type File {
-    _id: ObjectId!
-    created: String!
-    link: String!
-    name: String!
-    owner: User!
-    reference: String!
+  _id: ObjectId!
+  created: String!
+  link: String
+  name: String!
+  owner: User!
+  reference: String!
 }
 
 type Mutation {
@@ -76,89 +76,89 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-    assignment(assignmentId: ObjectId!): Assignment!
-    course(courseId: ObjectId!): Course!
-    file(fileId: ObjectId!): File!
-    instructorCourse(courseId: ObjectId!): Course!
-    instructorCourses: [Course!]!
-    self: User!
-    Specification(SpecificationId: ObjectId!): Specification!
-    studentAssignments: [Assignment!]!
-    submission(submissionId: ObjectId!): Submission!
-    TestSpecification(TestSpecificationId: ObjectId!): TestSpecification!
-    user(targetId: ObjectId!): User!
-    userSelf: User!
+  assignment(assignmentId: ObjectId!): Assignment!
+  course(courseId: ObjectId!): Course!
+  file(fileId: ObjectId!): File!
+  instructorCourse(courseId: ObjectId!): Course!
+  instructorCourses: [Course!]!
+  self: User!
+  Specification(SpecificationId: ObjectId!): Specification!
+  studentAssignments: [Assignment!]!
+  submission(submissionId: ObjectId!): Submission!
+  TestSpecification(TestSpecificationId: ObjectId!): TestSpecification!
+  user(targetId: ObjectId!): User!
+  userSelf: User!
 }
 
 type Specification {
-    _id: ObjectId!
-    command: String!
-    course: Course!
-    created: String!
-    providedFiles: [File!]!
-    requiredFiles: [String!]!
-    tests: [TestSpecification!]!
-    timeout: Float!
+  _id: ObjectId!
+  command: String!
+  course: Course!
+  created: String!
+  providedFiles: [File!]!
+  requiredFiles: [String!]!
+  tests: [TestSpecification!]!
+  timeout: Float!
 }
 
 input SpecificationInput {
-    command: String!
-    timeout: Float!
+  command: String!
+  timeout: Float!
 }
 
 type Submission {
-    _id: ObjectId!
-    assignment: Assignment!
-    created: String!
-    duration: String!
-    files: [File!]!
-    owner: User!
-    passed: Boolean!
-    results: [SubmissionResult!]!
-    stdout: [String!]
-    submissionOwner: User!
+  _id: ObjectId!
+  assignment: Assignment!
+  created: String!
+  duration: String!
+  files: [File!]!
+  owner: User!
+  passed: Boolean!
+  results: [SubmissionResult!]!
+  stdout: [String!]
+  submissionOwner: User!
 }
 
 type SubmissionResult {
-    _id: ObjectId!
-    created: String!
-    exit: Float!
-    memory: Float!
-    passed: Boolean!
-    stderr: [String!]
-    stdout: [String!]
-    test: TestSpecification!
-    testElapsedTime: String!
+  _id: ObjectId!
+  created: String!
+  exit: Float!
+  memory: Float!
+  passed: Boolean!
+  stderr: [String!]
+  stdout: [String!]
+  test: TestSpecification!
+  testElapsedTime: String!
 }
 
 type TestSpecification {
-    _id: ObjectId!
-    args: [String!]!
-    created: String!
-    env: [String!]!
-    exit: Float!
-    hidden: Boolean
-    leaks: Boolean
-    name: String!
-    stderr: File
-    stdin: File
-    stdout: File
-    testContext: [String!]!
-    timeout: Float!
+  _id: ObjectId!
+  args: [String!]!
+  created: String!
+  env: [String!]!
+  exit: Float!
+  hidden: Boolean
+  leaks: Boolean
+  name: String!
+  stderr: File
+  stdin: File
+  stdout: File
+  testContext: [String!]!
+  timeout: Float!
 }
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 type User {
-    _id: ObjectId!
-    account: String!
-    courses: [Course!]
-    created: String!
-    email: String!
-    firstname: String!
-    fullName: String!
-    lastname: String!
-    password: String!
-    username: String!
+  _id: ObjectId!
+  account: String!
+  courses: [Course!]
+  created: String!
+  email: String!
+  firstname: String!
+  fullName: String!
+  lastname: String!
+  password: String!
+  username: String!
 }

@@ -20,6 +20,10 @@ export class File {
     @Mongoose({required: true, ref: "User"})
     owner!: User;
 
+    @GraphQL({nullable: true})
+    @Mongoose()
+    link: string;
+
     @GraphQL()
     @Mongoose({default: Date.now})
     created: string;

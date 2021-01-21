@@ -75,11 +75,12 @@ export default {
     },
     tradeFile(name: string, fileStream: Stream, owner: ObjectId): Promise<File> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(name, fileStream).then(reference => {
+            s3Client.uploadFile(name, fileStream).then((reference: AWS.S3.ManagedUpload.SendData) => {
                 FileModel.create({
                     name: name,
                     owner: owner,
-                    reference: reference
+                    reference: reference.Key,
+                    link: reference.Location,
                 }).then(document => {
                     resolve(document);
                 }).catch(error => {
@@ -90,11 +91,12 @@ export default {
     },
     createFile(name: string, fileStream: Stream, owner: ObjectId): Promise<ObjectId> {
         return new Promise((resolve, reject) => {
-            s3Client.uploadFile(name, fileStream).then(reference => {
+            s3Client.uploadFile(name, fileStream).then((reference: AWS.S3.ManagedUpload.SendData) => {
                 FileModel.create({
                     name: name,
                     owner: owner,
-                    reference: reference
+                    reference: reference.Key,
+                    link: reference.Location,
                 }).then(document => {
                     resolve(document._id);
                 }).catch(error => {

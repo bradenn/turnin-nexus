@@ -26,8 +26,9 @@ export default {
             };
             s3Client.upload(params, (err, data) => {
                 fileStream.destroy();
+                data.Location
                 if (err || !data) reject(err);
-                if(data) resolve(data.Key);
+                if (data) resolve(data);
             })
         });
     },
