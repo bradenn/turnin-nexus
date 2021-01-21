@@ -50,7 +50,7 @@ export class AssignmentResolver {
     }
 
     @FieldResolver(returns => [Submission])
-    async assignmentSubmissions(@Root() assignment: Assignment): Promise<Submission[]> {
+    async submissions(@Root() assignment: Assignment): Promise<Submission[]> {
         return await SubmissionService.getAssignmentSubmissions(assignment)
     }
 
