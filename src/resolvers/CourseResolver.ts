@@ -31,8 +31,14 @@ export class CourseResolver {
         return await courseService.getStudentCount(course._id)
     }
 
+    /*DEPRECATED*/
     @FieldResolver(returns => String)
     courseFullName(@Root() course: Course): String {
+        return `${course.name}.${course.section}`;
+    }
+
+    @FieldResolver(returns => String)
+    fullName(@Root() course: Course): String {
         return `${course.name}.${course.section}`;
     }
 
@@ -49,7 +55,7 @@ export class CourseResolver {
 
     @Mutation(returns => Course)
     async createCourse(@Ctx() {userId}: Context,
-                           @Arg("courseInput") courseInput: CourseInput): Promise<Course> {
+                       @Arg("courseInput") courseInput: CourseInput): Promise<Course> {
         return await courseService.createCourse(courseInput, userId)
     }
 }

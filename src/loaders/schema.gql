@@ -38,8 +38,9 @@ type Course {
   courseFullName: String!
   courseStudentCount: Float!
   created: String!
-  description: String!
-  instructor: User!
+    description: String!
+    fullName: String!
+    instructor: User!
   locked: Boolean!
   name: String!
   section: Float!
