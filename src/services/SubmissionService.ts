@@ -54,17 +54,19 @@ export default {
             }
         }
 
-        return axios.post('http://localhost:5050/api/compile', payload).then(data => {
-            const testResults = data.data.submissionTestResults;
 
-            return Promise.all(testResults.map(result => {
+        return axios.post('http://localhost:5050/api/test', payload).then(data => {
+            const results = data.data.results;
+            const compiler = data.data.compiler;
+            console.log(results)
+            return Promise.all(results.map(result => {
                 return SubmissionResultModel.create({
                     test: result._id,
-                    memory: result.bytesUsed,
+                    memory: result.memory,
                     exit: result.exit,
-                    testElapsedTime: result.testElapsedTime,
-                    stdout: result.testOutputDiff,
-                    stderr: result.testErrorDiff,
+                    duration: result.time.elapsed,
+                    stdout: result.stdout,
+                    stderr: result.stderr,
                     passed: result.passed
                 }).then(doc => doc._id)
             })).then(results => {
@@ -73,8 +75,8 @@ export default {
                     owner: userId,
                     files: files.map(obj => obj._id),
                     results: results,
-                    stdout: data.data.compilationResults.compilationOutput,
-                    duration: data.data.compilationResults.compilationTime
+                    stdout: compiler.stdout,
+                    duration: compiler.time
                 }).then(doc => {
                     return doc
                 })

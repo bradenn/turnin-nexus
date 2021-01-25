@@ -27,7 +27,7 @@ export class SubmissionResult {
 
     @GraphQL(type => String)
     @Mongoose({default: "0ms"})
-    testElapsedTime: string
+    duration: string
 
     @GraphQL(type => [String], {nullable: true})
     @Mongoose({type: [String]})

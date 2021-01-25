@@ -26,7 +26,7 @@ export default {
             };
             s3Client.upload(params, (err, data) => {
                 fileStream.destroy();
-                data.Location
+                data.Location = `${process.env.S3_LINK}/${process.env.S3_BUCKET}/${data.Key}`
                 if (err || !data) reject(err);
                 if (data) resolve(data);
             })

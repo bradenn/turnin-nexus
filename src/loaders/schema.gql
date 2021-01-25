@@ -32,18 +32,18 @@ type Brief {
 }
 
 type Course {
-  _id: ObjectId!
-  courseAssignmentCount: Float!
-  courseAssignments: [Assignment!]!
-  courseFullName: String!
-  courseStudentCount: Float!
-  created: String!
+    _id: ObjectId!
+    courseAssignmentCount: Float!
+    courseAssignments: [Assignment!]!
+    courseFullName: String!
+    courseStudentCount: Float!
+    created: String!
     description: String!
     fullName: String!
     instructor: User!
-  locked: Boolean!
-  name: String!
-  section: Float!
+    locked: Boolean!
+    name: String!
+    section: Float!
 }
 
 input CourseInput {
@@ -122,14 +122,14 @@ type Submission {
 
 type SubmissionResult {
   _id: ObjectId!
-  created: String!
-  exit: Float!
+    created: String!
+    duration: String!
+    exit: Float!
   memory: Float!
   passed: Boolean!
   stderr: [String!]
   stdout: [String!]
   test: TestSpecification!
-  testElapsedTime: String!
 }
 
 type TestSpecification {
