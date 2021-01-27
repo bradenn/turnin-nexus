@@ -5,7 +5,7 @@ import {SpecificationInput} from "../resolvers/inputs/SpecificationInput";
 import {FileUpload} from "graphql-upload";
 import FileService, {IGroupedAndNamedFileBuffer} from "./FileService";
 import TestService from "./TestService";
-import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
+import {Test, TestSpecificationModel} from "../schemas/Test";
 
 
 export default {
@@ -71,7 +71,7 @@ export default {
         if (!SpecificationRecord) throw new Error('Failed to get the Specification.');
         return SpecificationRecord.providedFiles;
     },
-    async getSpecificationTests(TestSpecifications: TestSpecification[]): Promise<TestSpecification[]> {
+    async getSpecificationTests(TestSpecifications: Test[]): Promise<Test[]> {
         const SpecificationRecord = await TestSpecificationModel.find({_id: TestSpecifications}).populate(['stdin', 'stdout', 'stderr'])
         if (!SpecificationRecord) throw new Error('Failed to get the Specification.');
         return SpecificationRecord;

@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {TestSpecificationModel} from "../schemas/TestSpecification";
+import {TestSpecificationModel} from "../schemas/Test";
 
 
 export default {

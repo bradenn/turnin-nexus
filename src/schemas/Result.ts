@@ -1,17 +1,19 @@
 import {Field as GraphQL, ObjectType} from "type-graphql"
 import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {ObjectId} from "mongodb";
-import {TestSpecification} from "./TestSpecification";
+import {Test} from "./Test";
+import {Leak} from "./Leak";
+import {Ref} from "typegoose";
 
 @ObjectType()
-export class SubmissionResult {
+export class Result {
 
     @GraphQL()
     readonly _id: ObjectId;
 
-    @GraphQL(type => TestSpecification)
-    @Mongoose({required: true, ref: "TestSpecification"})
-    test!: TestSpecification
+    @GraphQL(type => Test)
+    @Mongoose({required: true, ref: "Test"})
+    test!: Test
 
     @GraphQL({nullable: false})
     @Mongoose({default: false})
@@ -37,10 +39,22 @@ export class SubmissionResult {
     @Mongoose({type: [String]})
     stderr: string[];
 
+    @GraphQL(type => [String], {nullable: true})
+    @Mongoose({type: [String]})
+    diffout: string[];
+
+    @GraphQL(type => [String], {nullable: true})
+    @Mongoose({type: [String]})
+    differr: string[];
+
+    @GraphQL(type => Leak, {nullable: true})
+    @Mongoose({required: false, ref: "Leak"})
+    leak: Ref<Leak>
+
     @GraphQL()
     @Mongoose({default: Date.now})
     created: string
 }
 
-export const SubmissionResultModel = getModelForClass(SubmissionResult);
+export const SubmissionResultModel = getModelForClass(Result);
 

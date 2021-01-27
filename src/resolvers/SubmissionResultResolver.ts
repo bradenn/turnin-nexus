@@ -1,15 +1,15 @@
 import {FieldResolver, Resolver, Root} from "type-graphql";
 import SubmissionService from "../services/SubmissionService";
-import {TestSpecification} from "../schemas/TestSpecification";
-import {SubmissionResult} from "../schemas/SubmissionResult";
+import {Test} from "../schemas/Test";
+import {Result} from "../schemas/Result";
 
 
-@Resolver(of => SubmissionResult)
+@Resolver(of => Result)
 export class SubmissionResultResolver {
 
-    @FieldResolver(returns => TestSpecification)
-    async test(@Root() submissionResult: SubmissionResult): Promise<TestSpecification> {
-        return await SubmissionService.getTestSpecification(submissionResult.test._id)
+    @FieldResolver(returns => Test)
+    async test(@Root() Result: Result): Promise<Test> {
+        return await SubmissionService.getTestSpecification(Result.test._id)
     }
 
 }

@@ -1,7 +1,7 @@
 import {Field as GraphQL, ObjectType} from "type-graphql"
 import {getModelForClass, prop as Mongoose} from "@typegoose/typegoose"
 import {File} from "./File";
-import {TestSpecification} from "./TestSpecification";
+import {Test} from "./Test";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
@@ -26,9 +26,9 @@ export class Specification {
     @Mongoose({ref: "File", default: []})
     providedFiles!: File[]
 
-    @GraphQL(type => [TestSpecification])
+    @GraphQL(type => [Test])
     @Mongoose({ref: "TestSpecification", default: []})
-    tests: TestSpecification[];
+    tests: Test[];
 
     @GraphQL()
     @Mongoose({default: Date.now})

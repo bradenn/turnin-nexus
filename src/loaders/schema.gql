@@ -13,7 +13,7 @@ type Assignment {
   late: String!
   name: String!
   specification: Specification!
-    submissions: [Submission!]!
+  submissions: [Submission!]!
 }
 
 input AssignmentInput {
@@ -32,18 +32,18 @@ type Brief {
 }
 
 type Course {
-    _id: ObjectId!
-    courseAssignmentCount: Float!
-    courseAssignments: [Assignment!]!
-    courseFullName: String!
-    courseStudentCount: Float!
-    created: String!
-    description: String!
-    fullName: String!
-    instructor: User!
-    locked: Boolean!
-    name: String!
-    section: Float!
+  _id: ObjectId!
+  courseAssignmentCount: Float!
+  courseAssignments: [Assignment!]!
+  courseFullName: String!
+  courseStudentCount: Float!
+  created: String!
+  description: String!
+  fullName: String!
+  instructor: User!
+  locked: Boolean!
+  name: String!
+  section: Float!
 }
 
 input CourseInput {
@@ -59,6 +59,18 @@ type File {
   name: String!
   owner: User!
   reference: String!
+}
+
+type Leak {
+  _id: ObjectId!
+  allBytes: Float!
+  allocs: Float!
+  blocksLost: Float!
+  bytesLost: Float!
+  elapsed: String!
+  frees: Float!
+  leaks: [String!]
+  passed: Boolean!
 }
 
 type Mutation {
@@ -86,9 +98,24 @@ type Query {
   Specification(SpecificationId: ObjectId!): Specification!
   studentAssignments: [Assignment!]!
   submission(submissionId: ObjectId!): Submission!
-  TestSpecification(TestSpecificationId: ObjectId!): TestSpecification!
+  TestSpecification(TestSpecificationId: ObjectId!): Test!
   user(targetId: ObjectId!): User!
   userSelf: User!
+}
+
+type Result {
+  _id: ObjectId!
+  created: String!
+  differr: [String!]
+  diffout: [String!]
+  duration: String!
+  exit: Float!
+  leak: Leak
+  memory: Float!
+  passed: Boolean!
+  stderr: [String!]
+  stdout: [String!]
+  test: Test!
 }
 
 type Specification {
@@ -98,7 +125,7 @@ type Specification {
   created: String!
   providedFiles: [File!]!
   requiredFiles: [String!]!
-  tests: [TestSpecification!]!
+  tests: [Test!]!
   timeout: Float!
 }
 
@@ -115,24 +142,12 @@ type Submission {
   files: [File!]!
   owner: User!
   passed: Boolean!
-  results: [SubmissionResult!]!
+  results: [Result!]!
   stdout: [String!]
   submissionOwner: User!
 }
 
-type SubmissionResult {
-  _id: ObjectId!
-    created: String!
-    duration: String!
-    exit: Float!
-  memory: Float!
-  passed: Boolean!
-  stderr: [String!]
-  stdout: [String!]
-  test: TestSpecification!
-}
-
-type TestSpecification {
+type Test {
   _id: ObjectId!
   args: [String!]!
   created: String!

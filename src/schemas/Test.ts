@@ -4,7 +4,7 @@ import {File} from "./File"
 import {ObjectId} from "mongodb";
 
 @ObjectType()
-export class TestSpecification {
+export class Test {
 
     @GraphQL()
     readonly _id: ObjectId;
@@ -54,5 +54,5 @@ export class TestSpecification {
     created: string
 }
 
-export const TestSpecificationModel = getModelForClass(TestSpecification);
+export const TestSpecificationModel = getModelForClass(Test);
 

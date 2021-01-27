@@ -5,7 +5,7 @@ This module is handles objects and interactions related to the Turnin's core ser
 
 ## Abstract Flow Structure
 
-`T: User | Course | Assignment | Brief | File | Specification | TestSpecification | Submission | SubmissionResult`
+`T: User | Course | Assignment | Brief | File | Specification | Test | Submission | Result`
 
 `Schema<T> => Resolver<T> || Input<T> || Service<T>`
 
@@ -15,13 +15,13 @@ This module is handles objects and interactions related to the Turnin's core ser
 
 `Assignment => Course, Specification`
 
-`Specification => TestSpecification[], File`
+`Specification => Test[], File`
 
-`TestSpecification => File`
+`Test => File`
 
-`Submission => SubmissionResult[], User, Assignment`
+`Submission => Result[], User, Assignment`
 
-`SubmissionResult => File`
+`Result => File`
 
 
 

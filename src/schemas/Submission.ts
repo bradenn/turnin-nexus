@@ -4,7 +4,7 @@ import {prop as Mongoose} from "@typegoose/typegoose/lib/prop";
 import {File} from "./File";
 import {Assignment} from "./Assignment";
 import {User} from "./User";
-import {SubmissionResult} from "./SubmissionResult";
+import {Result} from "./Result";
 import {ObjectId} from "mongodb";
 
 @ObjectType()
@@ -25,9 +25,9 @@ export class Submission {
     @Mongoose({ref: "File", default: []})
     files!: Ref<File>[]
 
-    @GraphQL(type => [SubmissionResult])
-    @Mongoose({ref: "SubmissionResult", default: []})
-    results: Ref<SubmissionResult>[];
+    @GraphQL(type => [Result])
+    @Mongoose({ref: "Result", default: []})
+    results: Ref<Result>[];
 
     @GraphQL(type => Boolean)
     @Mongoose({default: false, type: Boolean})

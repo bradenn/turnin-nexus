@@ -32,7 +32,7 @@ export class UserResolver {
 
     @FieldResolver(returns => String)
     async fullName(@Root() user: User): Promise<String> {
-        return `${user.firstname} ${user.lastname}`
+        return `${user.firstname} ${user.lastname}`;
     }
 
 }

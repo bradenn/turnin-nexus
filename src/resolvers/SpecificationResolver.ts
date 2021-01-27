@@ -9,7 +9,7 @@ import courseService from "../services/CourseService";
 import {Specification} from "../schemas/Specification";
 import {SpecificationInput} from "./inputs/SpecificationInput";
 import {FileUpload, GraphQLUpload} from 'graphql-upload';
-import {TestSpecification} from "../schemas/TestSpecification";
+import {Test} from "../schemas/Test";
 
 @Resolver(of => Specification)
 export class SpecificationResolver {
@@ -70,8 +70,8 @@ export class SpecificationResolver {
         return await SpecificationService.addCompressedTests(SpecificationId, fileUpload, userId);
     }
 
-    @FieldResolver(returns => [TestSpecification])
-    async tests(@Root() Specification: Specification): Promise<TestSpecification[]> {
+    @FieldResolver(returns => [Test])
+    async tests(@Root() Specification: Specification): Promise<Test[]> {
         return await SpecificationService.getSpecificationTests(Specification.tests)
     }
 

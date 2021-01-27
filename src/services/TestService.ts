@@ -1,7 +1,7 @@
 import {ObjectId} from "mongodb";
 import FileService, {IGroupedAndNamedFileBuffer} from "./FileService";
 import {Readable} from 'stream';
-import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
+import {Test, TestSpecificationModel} from "../schemas/Test";
 
 interface ITestSpecification {
     name: string;
@@ -41,7 +41,7 @@ export default {
             })).then(testIds => resolve(testIds));
         });
     },
-    async createTestSpecification(testBody): Promise<TestSpecification> {
+    async createTestSpecification(testBody): Promise<Test> {
         const TestSpecificationRecord = await TestSpecificationModel.create(testBody);
         if (!TestSpecificationRecord) throw new Error('Failed to update Specification');
         return TestSpecificationRecord;

@@ -4,20 +4,20 @@ import FileService from "./FileService";
 // @ts-ignore
 import axios from "axios";
 import {Assignment, AssignmentModel} from "../schemas/Assignment";
-import {TestSpecification, TestSpecificationModel} from "../schemas/TestSpecification";
+import {Test, TestSpecificationModel} from "../schemas/Test";
 import {SpecificationModel} from "../schemas/Specification";
 import {Submission, SubmissionModel} from "../schemas/Submission";
-import {SubmissionResultModel} from "../schemas/SubmissionResult";
+import {SubmissionResultModel} from "../schemas/Result";
 
 
 export default {
-    async getTestSpecification(testSpecificationId: ObjectId): Promise<TestSpecification> {
+    async getTestSpecification(testSpecificationId: ObjectId): Promise<Test> {
         const testSpecificationRecord = await TestSpecificationModel.findById(testSpecificationId).exec();
         if (!testSpecificationRecord) throw new Error("Could not find submission")
         return testSpecificationRecord
     },
     async getSubmission(submissionId: ObjectId, userId: ObjectId): Promise<Submission> {
-        const submissionRecord = await SubmissionModel.findById(submissionId).populate('submissionResults').exec();
+        const submissionRecord = await SubmissionModel.findById(submissionId).populate('results').exec();
         if (!submissionRecord) throw new Error("Could not find submission")
         return submissionRecord
     },
@@ -47,8 +47,10 @@ export default {
                 reference: file.reference,
                 link: `${process.env.S3_LINK}/${process.env.S3_BUCKET}/${file.reference}`
             })),
-            tests: tests,
-            configuration: {
+            grader: {
+                tests: tests
+            },
+            compiler: {
                 cmd: specification.command,
                 timeout: specification.timeout
             }
@@ -56,35 +58,43 @@ export default {
 
 
         return axios.post('http://localhost:5050/api/test', payload).then(data => {
-            const results = data.data.results;
-            const compiler = data.data.compiler;
-            console.log(results)
+            console.log(data.data)
+            const results = data.data.grades.results;
+            const compilation = data.data.compilation;
+
             return Promise.all(results.map(result => {
+
                 return SubmissionResultModel.create({
                     test: result._id,
                     memory: result.memory,
                     exit: result.exit,
                     duration: result.time.elapsed,
+                    leak: result.leak,
                     stdout: result.stdout,
                     stderr: result.stderr,
                     passed: result.passed
-                }).then(doc => doc._id)
+                }).then(doc => {
+                    return doc._id
+                })
+
             })).then(results => {
                 return SubmissionModel.create({
                     assignment: assignmentId,
                     owner: userId,
                     files: files.map(obj => obj._id),
                     results: results,
-                    stdout: compiler.stdout,
-                    duration: compiler.time
+                    stdout: compilation.stdout,
+                    duration: compilation.time
                 }).then(doc => {
                     return doc
                 })
             })
+        }).catch(err => {
+            console.log(err)
         })
     },
     async getAssignmentSubmissions(submissionAssignment: Assignment) {
-        const submissionRecord = await SubmissionModel.find({submissionAssignment: submissionAssignment}).populate('submissionResults').exec();
+        const submissionRecord = await SubmissionModel.find({assignment: submissionAssignment}).populate('results').exec();
         if (!submissionRecord) throw new Error("Could not find submissions")
         return submissionRecord
     }
