@@ -8,6 +8,8 @@ import {FileUpload, GraphQLUpload} from "graphql-upload";
 import {Submission} from "../schemas/Submission";
 import {User} from "../schemas/User";
 import userService from "../services/UserService";
+import {Assignment} from "../schemas/Assignment";
+import AssignmentService from "../services/AssignmentService";
 
 
 @Resolver(of => Submission)
@@ -29,6 +31,12 @@ export class SubmissionResolver {
     @FieldResolver(returns => User)
     async submissionOwner(@Root() submission: Submission): Promise<User> {
         return await userService.getUser(submission.owner._id);
+    }
+
+    @FieldResolver(returns => Assignment)
+    async assignment(@Ctx() {userId}: Context,
+                     @Root() submission: Submission): Promise<Assignment> {
+        return await AssignmentService.getAssignment(submission.assignment._id, userId)
     }
 
 

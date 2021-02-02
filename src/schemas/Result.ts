@@ -19,6 +19,10 @@ export class Result {
     @Mongoose({default: false})
     passed: boolean;
 
+    @GraphQL({nullable: false})
+    @Mongoose({default: false})
+    timeout: boolean;
+
     @GraphQL()
     @Mongoose({default: 0})
     memory: number

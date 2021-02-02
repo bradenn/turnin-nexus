@@ -7,17 +7,26 @@ import {Assignment, AssignmentModel} from "../schemas/Assignment";
 import {Test, TestSpecificationModel} from "../schemas/Test";
 import {SpecificationModel} from "../schemas/Specification";
 import {Submission, SubmissionModel} from "../schemas/Submission";
-import {SubmissionResultModel} from "../schemas/Result";
+import {Result, SubmissionResultModel} from "../schemas/Result";
+import {Leak, LeakModel} from "../schemas/Leak";
 
 
 export default {
+    async getResult(resultId: ObjectId): Promise<Result> {
+        const resultRecord = await SubmissionResultModel.findById(resultId).exec();
+        if (!resultRecord) throw new Error("Could not find result")
+        return resultRecord
+    },
+    async getLeak(leakId: ObjectId): Promise<Leak> {
+        return await LeakModel.findById(leakId).exec()
+    },
     async getTestSpecification(testSpecificationId: ObjectId): Promise<Test> {
         const testSpecificationRecord = await TestSpecificationModel.findById(testSpecificationId).exec();
         if (!testSpecificationRecord) throw new Error("Could not find submission")
         return testSpecificationRecord
     },
     async getSubmission(submissionId: ObjectId, userId: ObjectId): Promise<Submission> {
-        const submissionRecord = await SubmissionModel.findById(submissionId).populate('results').exec();
+        const submissionRecord = await SubmissionModel.findById(submissionId).populate(['files', 'results']).exec();
         if (!submissionRecord) throw new Error("Could not find submission")
         return submissionRecord
     },
@@ -56,22 +65,36 @@ export default {
             }
         }
 
-
         return axios.post('http://localhost:5050/api/test', payload).then(data => {
             console.log(data.data)
             const results = data.data.grades.results;
             const compilation = data.data.compilation;
 
-            return Promise.all(results.map(result => {
-
+            return Promise.all(results.map(async result => {
+                let lk;
+                if (result.leak.elapsed !== "") {
+                    lk = await LeakModel.create({
+                        passed: result.leak.passed,
+                        elapsed: result.leak.elapsed,
+                        bytesLost: result.leak.lost.bytes,
+                        blocksLost: result.leak.lost.blocks,
+                        allocs: result.leak.runtime.allocs,
+                        frees: result.leak.runtime.frees,
+                        allBytes: result.leak.runtime.bytes,
+                        leaks: result.leak.leaks.trace,
+                    }).then(doc => doc)
+                    console.log(lk)
+                }
                 return SubmissionResultModel.create({
                     test: result._id,
                     memory: result.memory,
-                    exit: result.exit,
                     duration: result.time.elapsed,
-                    leak: result.leak,
-                    stdout: result.stdout,
-                    stderr: result.stderr,
+                    timeout: result.timeout,
+                    leak: (typeof lk === 'undefined') ? null : lk._id,
+                    stdout: result.stdout || [],
+                    stderr: result.stderr || [],
+                    diffout: result.diff.stdout || [],
+                    differr: result.diff.stderr || [],
                     passed: result.passed
                 }).then(doc => {
                     return doc._id

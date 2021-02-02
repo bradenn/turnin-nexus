@@ -94,7 +94,8 @@ type Query {
   file(fileId: ObjectId!): File!
   instructorCourse(courseId: ObjectId!): Course!
   instructorCourses: [Course!]!
-  self: User!
+    result(resultId: ObjectId!): Result!
+    self: User!
   Specification(SpecificationId: ObjectId!): Specification!
   studentAssignments: [Assignment!]!
   submission(submissionId: ObjectId!): Submission!
@@ -115,7 +116,8 @@ type Result {
   passed: Boolean!
   stderr: [String!]
   stdout: [String!]
-  test: Test!
+    test: Test!
+    timeout: Boolean!
 }
 
 type Specification {

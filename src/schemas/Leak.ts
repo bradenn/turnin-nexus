@@ -42,5 +42,5 @@ export class Leak {
 
 }
 
-export const SubmissionResultModel = getModelForClass(Leak);
+export const LeakModel = getModelForClass(Leak);
 

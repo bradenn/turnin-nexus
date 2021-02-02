@@ -14,7 +14,7 @@ export class Test {
     name!: string;
 
     @GraphQL()
-    @Mongoose({default: 50})
+    @Mongoose({default: 3000})
     timeout: number;
 
     @GraphQL({nullable: true})

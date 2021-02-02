@@ -39,6 +39,7 @@ export class AssignmentResolver {
         return await courseService.getCourse(assignment.course)
     }
 
+
     @FieldResolver(returns => Course)
     async brief(@Root() assignment: Assignment): Promise<Course> {
         return await courseService.getCourse(assignment.course)
