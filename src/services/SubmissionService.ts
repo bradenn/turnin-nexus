@@ -65,7 +65,7 @@ export default {
             }
         }
 
-        return axios.post('http://localhost:5050/api/test', payload).then(data => {
+        return axios.post('http://localhost:5050/api/v1/submit', payload).then(data => {
             console.log(data.data)
             const results = data.data.grades.results;
             const compilation = data.data.compilation;

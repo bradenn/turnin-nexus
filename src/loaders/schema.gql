@@ -89,33 +89,33 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  assignment(assignmentId: ObjectId!): Assignment!
-  course(courseId: ObjectId!): Course!
-  file(fileId: ObjectId!): File!
-  instructorCourse(courseId: ObjectId!): Course!
-  instructorCourses: [Course!]!
+    assignment(assignmentId: ObjectId!): Assignment!
+    course(courseId: ObjectId!): Course!
+    file(fileId: ObjectId!): File!
+    instructorCourse(courseId: ObjectId!): Course!
+    instructorCourses: [Course!]!
     result(resultId: ObjectId!): Result!
     self: User!
-  Specification(SpecificationId: ObjectId!): Specification!
-  studentAssignments: [Assignment!]!
-  submission(submissionId: ObjectId!): Submission!
-  TestSpecification(TestSpecificationId: ObjectId!): Test!
-  user(targetId: ObjectId!): User!
-  userSelf: User!
+    Specification(SpecificationId: ObjectId!): Specification!
+    studentAssignments: [Assignment!]!
+    submission(submissionId: ObjectId!): Submission!
+    TestSpecification(TestSpecificationId: ObjectId!): Test!
+    user(targetId: ObjectId!): User!
+    userSelf: User!
 }
 
 type Result {
   _id: ObjectId!
-  created: String!
-  differr: [String!]
-  diffout: [String!]
-  duration: String!
-  exit: Float!
-  leak: Leak
-  memory: Float!
-  passed: Boolean!
-  stderr: [String!]
-  stdout: [String!]
+    created: String!
+    differr: [String!]
+    diffout: [String!]
+    duration: String!
+    exit: Float!
+    leak: Leak
+    memory: Float!
+    passed: Boolean!
+    stderr: [String!]
+    stdout: [String!]
     test: Test!
     timeout: Boolean!
 }
